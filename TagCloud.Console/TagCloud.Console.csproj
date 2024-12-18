@@ -15,4 +15,8 @@
       <ProjectReference Include="..\TagCloud\TagCloud.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="FilesWithTexts\" />
+    </ItemGroup>
+
 </Project>

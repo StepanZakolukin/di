@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="TextProcessing\Mystem\mystem.exe">
+      <None Update="TextProcessing\mystem.exe">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

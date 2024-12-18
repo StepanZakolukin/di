@@ -2,14 +2,14 @@
 
 namespace TagCloud.CloudLayout;
 
-public class CircularCloud
+public class CircularCloud : ILayoutProvider
 {
     private const double AngleChangeStep = Math.PI / 180;
     private int DistanceBetweenTurns { get; set; }
     private int InitialRadiusOfSpiral { get; set; }
     private double AngleOfRotationInRadians { get; set; }
 
-    private readonly LinkedList<Rectangle> cloudOfRectangles;
+    private readonly LinkedList<RectangleF> cloudOfRectangles;
 
     public readonly Point Center;
 
@@ -20,9 +20,9 @@ public class CircularCloud
         DistanceBetweenTurns = 30;
     }
 
-    public Rectangle PutNextRectangle(Size rectangleSize)
+    public RectangleF PutNextRectangle(SizeF rectangleSize)
     {
-        var halfOfMinSide = Math.Min(rectangleSize.Width, rectangleSize.Height) / 2;
+        var halfOfMinSide = (int)(Math.Min(rectangleSize.Width, rectangleSize.Height) / 2);
         DistanceBetweenTurns = Math.Min(DistanceBetweenTurns, halfOfMinSide);
 
         if (cloudOfRectangles.Count == 0) InitialRadiusOfSpiral = halfOfMinSide;
@@ -33,7 +33,7 @@ public class CircularCloud
         return rectangle;
     }
 
-    private Rectangle ChooseLocationForRectangle(Size rectangleSize)
+    private RectangleF ChooseLocationForRectangle(SizeF rectangleSize)
     {
         var currentPoint = GetNewPoint();
         var rectangle = GetNewRectangle(currentPoint, rectangleSize);
@@ -48,16 +48,16 @@ public class CircularCloud
         return rectangle;
     }
 
-    private Rectangle GetNewRectangle(Point centerPoint, Size rectangleSize) =>
-        new(new(centerPoint.X - rectangleSize.Width / 2,
+    private RectangleF GetNewRectangle(PointF centerPoint, SizeF rectangleSize) =>
+        new(new PointF(centerPoint.X - rectangleSize.Width / 2,
             centerPoint.Y - rectangleSize.Height / 2), rectangleSize);
 
-    private Point GetNewPoint()
+    private PointF GetNewPoint()
     {
         var coefficient = InitialRadiusOfSpiral + AngleOfRotationInRadians * DistanceBetweenTurns;
-        var x = coefficient * Math.Cos(AngleOfRotationInRadians) + Center.X;
-        var y = coefficient * Math.Sin(AngleOfRotationInRadians) + Center.Y;
+        var x = (float)(coefficient * Math.Cos(AngleOfRotationInRadians) + Center.X);
+        var y = (float)(coefficient * Math.Sin(AngleOfRotationInRadians) + Center.Y);
 
-        return new((int)x, (int)y);
+        return new PointF(x, y);
     }
 }

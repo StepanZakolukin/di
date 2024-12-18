@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace TagCloud.TextProcessing;
 
-public class TextPreprocessing
+public class TextPreprocessing : IWordsProvider
 {
     private readonly Dictionary<string, string> decryptionGrammems = new()
     {
@@ -22,7 +22,6 @@ public class TextPreprocessing
         { "V", "глагол" }
     };
     
-    
     public IEnumerable<WordInfo> PerformPreprocessing(string pathToSourceTxtFile)
     {
         var textInfo = ParseText(pathToSourceTxtFile);
@@ -37,23 +36,21 @@ public class TextPreprocessing
             else countingDictionary[wordAndPartOfSpeech] = 1;
         }
 
-        foreach (var pair in countingDictionary)
-        {
-            yield return new WordInfo(pair.Key.Item1,
-                decryptionGrammems[pair.Key.Item2],
-                pair.Value);
-        }
+        return countingDictionary.Select(pair => 
+            new WordInfo(pair.Key.Item1, 
+                decryptionGrammems[pair.Key.Item2], 
+                pair.Value));
     }
     
     private string[] ParseText(string pathToSourceTxtFile)
     {
-        var outputFile = "TextProcessing/Mystem/out.txt";
+        var outputFile = "TextProcessing/out.txt";
         var startInfo = new ProcessStartInfo
         {
             UseShellExecute = false,
             RedirectStandardInput = false,
             RedirectStandardOutput = false,
-            FileName = "TextProcessing/Mystem/mystem.exe",
+            FileName = "TextProcessing/mystem.exe",
             Arguments = $"-ling {pathToSourceTxtFile} {outputFile}",
         };
         
@@ -63,39 +60,5 @@ public class TextPreprocessing
         process.WaitForExit();
 
         return File.ReadAllLines(outputFile);
-    }
-}
-
-public record WordInfo
-{
-    public string Word { get; init; }
-    public string PartOfSpeech { get; init; }
-    public int NumberInText { get; init; }
-    
-    private readonly HashSet<string> partsOfSpeech = new()
-    {
-        "прилагательное",
-        "наречие",
-        "местоименное наречие",
-        "числительное-прилагательное",
-        "местоимение-прилагательное",
-        "часть композита - сложного слова",
-        "союз",
-        "междометие",
-        "числительное",
-        "частица",
-        "предлог",
-        "существительное",
-        "местоимение-существительное",
-        "глагол"
-    };
-    
-    public WordInfo(string word, string partOfSpeech, int numberInText)
-    {
-        Word = word;
-        if (!partsOfSpeech.Contains(partOfSpeech))
-            throw new ArgumentException("Некорректная чаcть речи", nameof(partOfSpeech));
-        PartOfSpeech = partOfSpeech;
-        NumberInText = numberInText;
     }
 }
