@@ -1,7 +1,7 @@
 using System.Drawing;
 using TagCloud.TextProcessing;
 
-namespace TagCloud;
+namespace TagCloud.ImageGeneration;
 
 public interface IColorPicker
 {

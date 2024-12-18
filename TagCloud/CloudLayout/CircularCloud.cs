@@ -2,23 +2,16 @@
 
 namespace TagCloud.CloudLayout;
 
-public class CircularCloud : ILayoutProvider
+public class CircularCloud(Point center) : ILayoutProvider
 {
     private const double AngleChangeStep = Math.PI / 180;
-    private int DistanceBetweenTurns { get; set; }
+    private int DistanceBetweenTurns { get; set; } = 30;
     private int InitialRadiusOfSpiral { get; set; }
     private double AngleOfRotationInRadians { get; set; }
 
-    private readonly LinkedList<RectangleF> cloudOfRectangles;
+    private readonly LinkedList<RectangleF> cloudOfRectangles = [];
 
-    public readonly Point Center;
-
-    public CircularCloud(Point center)
-    {
-        Center = center;
-        cloudOfRectangles = [];
-        DistanceBetweenTurns = 30;
-    }
+    public readonly Point Center = center;
 
     public RectangleF PutNextRectangle(SizeF rectangleSize)
     {

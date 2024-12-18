@@ -2,9 +2,9 @@ namespace TagCloud.TextProcessing;
 
 public class WordInfo
 {
-    public string Word { get; init; }
+    public string Word { get; }
     public string PartOfSpeech { get; init; }
-    public int NumberInText { get; init; }
+    public int NumberInText { get; }
     
     private readonly HashSet<string> partsOfSpeech =
     [

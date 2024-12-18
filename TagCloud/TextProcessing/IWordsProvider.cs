@@ -1,6 +1,4 @@
-using TagCloud.TextProcessing;
-
-namespace TagCloud;
+namespace TagCloud.TextProcessing;
 
 public interface IWordsProvider
 {

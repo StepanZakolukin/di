@@ -22,10 +22,10 @@ public class VisualizationCloudLayout
         set
         {
             if (1 - value < 0.01 || value < 0.01)
-                throw new ArgumentException("Должно быть больше 0, номеньше или равно единице", nameof(value));
+                throw new ArgumentException("Должно быть больше 0, но меньше или равно единице", nameof(value));
             
             cloudCompressionRatio = value;
-            coefficient = ImageSize.Width * cloudCompressionRatio / numberOfWords;;
+            coefficient = ImageSize.Width * cloudCompressionRatio / numberOfWords;
         }
     }
     public VisualizationCloudLayout(IColorPicker colorPicker,
