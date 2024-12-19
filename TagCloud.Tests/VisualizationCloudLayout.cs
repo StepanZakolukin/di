@@ -2,20 +2,9 @@
 
 namespace TagCloud.Tests;
 
-public class VisualizationCloudLayout
+public class VisualizationCloudLayout(int width, int height, Color backgroundColor, IEnumerable<Color> rectanglePalette)
 {
-    private readonly int width;
-    private readonly int height;
-    private readonly Color backgroundColor;
-    private readonly Color[] rectanglePalette;
-
-    public VisualizationCloudLayout(int width, int height, Color backgroundColor, IEnumerable<Color> rectanglePalette)
-    {
-        this.width = width;
-        this.height = height;
-        this.backgroundColor = backgroundColor;
-        this.rectanglePalette = rectanglePalette.ToArray();
-    }
+    private readonly Color[] rectanglePalette = rectanglePalette.ToArray();
 
     public Bitmap CreateImage(IEnumerable<RectangleF> rectangles)
     {

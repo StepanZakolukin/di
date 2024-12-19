@@ -57,20 +57,4 @@ public class CircularCloudTests
             listRectangles.Add(rectangle);
         }
     }
-
-    [TearDown]
-    public void CreateReportInCaseOfAnError()
-    {
-        if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
-        {
-            var colors = new[] { Color.Red, Color.Green, Color.Brown, Color.Yellow, Color.Blue };
-            var path = $"../../../TestErrorReports/{TestContext.CurrentContext.Test.FullName}.png";
-            var visual = new VisualizationCloudLayout(1920, 1080, Color.White, colors);
-
-            visual.CreateImage(listRectangles).Save(path);
-            System.Console.WriteLine($"Tag cloud visualization saved to file {Path.GetFullPath(path)}");
-        }
-
-        listRectangles.Clear();
-    }
 }
