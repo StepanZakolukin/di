@@ -16,7 +16,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="FilesWithTexts\" />
+      <None Update="FilesWithTexts\Колобок.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Images\CentralСloud.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

@@ -13,7 +13,6 @@ public class VisualizationCloudLayout
     private readonly IEnumerable<WordInfo> wordsInfo;
     public Size ImageSize { get; set; } = new(1080, 1080);
     public FontFamily FontFamily { get; set; } = new("Arial");
-    public Color BackgroundColor { get; set; } = Color.Transparent;
 
     private float cloudCompressionRatio;
     public float CloudCompressionRatio
@@ -28,6 +27,7 @@ public class VisualizationCloudLayout
             coefficient = ImageSize.Width * cloudCompressionRatio / numberOfWords;
         }
     }
+    
     public VisualizationCloudLayout(IColorPicker colorPicker,
         ILayoutProvider layoutProvider, IEnumerable<WordInfo> words)
     {
@@ -38,7 +38,7 @@ public class VisualizationCloudLayout
         this.layoutProvider = layoutProvider;
     }
 
-    public Bitmap CreateImage(IEnumerable<WordInfo> rectangles)
+    public Bitmap CreateImage()
     {
         var image = new Bitmap(ImageSize.Width, ImageSize.Height);
         DrawСloudOfWords(Graphics.FromImage(image));
@@ -48,10 +48,6 @@ public class VisualizationCloudLayout
 
     private void DrawСloudOfWords(Graphics graphics)
     {
-        // рисуем фон
-        graphics.FillRectangle(new SolidBrush(BackgroundColor), 0, 0, ImageSize.Width, ImageSize.Height);
-
-        //рисуем слова
         foreach (var word in wordsInfo)
         {
             var color = colorPicker.GetColorForWord(word);
