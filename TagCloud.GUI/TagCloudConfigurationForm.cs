@@ -8,8 +8,10 @@ public partial class TagCloudConfigurationForm : Form
     public TagCloudConfigurationForm()
     {
         InitializeComponent();
-        Padding = new Padding(40, 35, 40, 35);
+        MaximizeBox = false;
         Size = new Size(1000, 800);
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        Padding = new Padding(40, 35, 40, 35);
     }
 
     private void Method()
