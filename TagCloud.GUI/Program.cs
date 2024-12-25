@@ -1,3 +1,5 @@
+using System;
+using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;

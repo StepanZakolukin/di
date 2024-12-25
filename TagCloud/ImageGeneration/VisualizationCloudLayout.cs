@@ -11,7 +11,7 @@ public class VisualizationCloudLayout : IVisualizationProvider
     public ILayoutProvider LayoutProvider { get; set; }
     private IEnumerable<WordInfo> WordsInfo { get; set; }
     public Size ImageSize { get; set; } = new(1080, 1080);
-    public FontFamily FontFamily { get; set; } = new("Arial");
+    public FontFamily FontFamily { get; set; }
 
     private float cloudCompressionRatio;
     public float CloudCompressionRatio
@@ -19,8 +19,8 @@ public class VisualizationCloudLayout : IVisualizationProvider
         get => cloudCompressionRatio;
         set
         {
-            if (value - 1 < 0.001 || value < 0.001)
-                throw new ArgumentException("Должно быть больше 0, но меньше или равно единице", nameof(value));
+            if (value < 0.001 || value > 1.001)
+                throw new ArgumentException("Должно быть больш е 0, но меньше или равно единице", nameof(value));
             
             cloudCompressionRatio = value;
         }

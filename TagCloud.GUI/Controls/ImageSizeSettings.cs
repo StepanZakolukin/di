@@ -1,3 +1,7 @@
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 using TagCloud.ImageGeneration;
 
 namespace TagCloudGUI.Controls;
@@ -74,13 +78,13 @@ public class ImageSizeSettings : TableLayoutPanel
 
     private void ProcessHeightChange(object sender, EventArgs args)
     {
-        if (heightTextBox.Text.All(char.IsDigit))
+        if (int.TryParse(heightTextBox.Text, out var height) && height > 0)
         {
             visualizationProvider.ImageSize = visualizationProvider.ImageSize with
             {
-                Height = int.Parse(heightTextBox.Text)
+                Height = height,
             };
-            heightTextBox.BackColor = Color.Gray;
+            heightTextBox.BackColor = Color.White;
         }
         else
         {
@@ -90,13 +94,13 @@ public class ImageSizeSettings : TableLayoutPanel
     
     private void ProcessWidthChange(object sender, EventArgs args)
     {
-        if (widthTextBox.Text.All(char.IsDigit))
+        if (int.TryParse(widthTextBox.Text, out var width) && width > 0)
         {
             visualizationProvider.ImageSize = visualizationProvider.ImageSize with
             {
-                Width = int.Parse(widthTextBox.Text)
+                Width = width
             };
-            widthTextBox.BackColor = Color.Gray;
+            widthTextBox.BackColor = Color.White;
         }
         else
         {

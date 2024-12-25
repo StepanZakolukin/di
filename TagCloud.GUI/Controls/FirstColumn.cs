@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Windows.Forms;
 using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
 

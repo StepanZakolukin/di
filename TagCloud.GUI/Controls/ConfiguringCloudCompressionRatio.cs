@@ -1,3 +1,6 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 using TagCloud.ImageGeneration;
 
 namespace TagCloudGUI.Controls;
@@ -7,6 +10,7 @@ public class ConfiguringCloudCompressionRatio : TableLayoutPanel
     private readonly Label heading = new()
     {
         Text = "Коэф. сжатия облака:",
+        TextAlign = ContentAlignment.MiddleLeft,
         Dock = DockStyle.Fill,
     };
 
@@ -26,8 +30,8 @@ public class ConfiguringCloudCompressionRatio : TableLayoutPanel
         coefficient.TextChanged += CoefficientHasChanged;
         
         RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 273));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 74));
+        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 260));
+        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 87));
         Controls.Add(heading, 0, 0);
         Controls.Add(coefficient, 1, 0);
     }

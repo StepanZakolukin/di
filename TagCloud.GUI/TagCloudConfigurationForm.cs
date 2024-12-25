@@ -1,30 +1,27 @@
-using Microsoft.Extensions.DependencyInjection;
 using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
 using TagCloud.TextProcessing;
 using TagCloudGUI.Controls;
+using Button = System.Windows.Forms.Button;
 
 namespace TagCloudGUI;
 
 public partial class TagCloudConfigurationForm : Form
 {
-    private static readonly Font font = new("Arial", 24, FontStyle.Regular, GraphicsUnit.Pixel);
-
     public TagCloudConfigurationForm(IVisualizationProvider visualizationProvider, IEnumerable<IColorPicker> colorPickers,
         IEnumerable<ILayoutProvider> layoutProviders)
     {
-        Font = font;
+        Font = new Font("Arial", 22, FontStyle.Regular, GraphicsUnit.Pixel);
         InitializeComponent();
-
         var table = new TableLayoutPanel { Dock = DockStyle.Fill };
         table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 920));
-        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 14));
-        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
+        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 662));
+        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
+        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
         
-        table.Controls.Add(new SettingsTable(visualizationProvider, colorPickers, layoutProviders) { Dock = DockStyle.Fill });
-        table.Controls.Add(new Panel { Dock = DockStyle.Fill });
-        table.Controls.Add(new PushButtonPanel());
+        table.Controls.Add(new SettingsTable(visualizationProvider, colorPickers, layoutProviders) { Dock = DockStyle.Fill }, 0, 0);
+        table.Controls.Add(new Panel { Dock = DockStyle.Fill }, 0, 1);
+        table.Controls.Add(new PushButtonPanel(), 0, 2);
         
         Controls.Add(table);
     }

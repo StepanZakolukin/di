@@ -1,39 +1,38 @@
 namespace TagCloudGUI.Controls;
 
-public class PushButtonPanel : TableLayoutPanel
+public sealed class PushButtonPanel : TableLayoutPanel
 {
-    private Button textUploadButton = new()
+    private readonly MyButton textUploadMyButton = new()
     {
         Text = "Загрузить текст",
-        Dock = DockStyle.Fill,
+        Width = 230,
     };
 
-    private Button cloudGenerationButton = new()
+    private readonly MyButton cloudGenerationMyButton = new()
     {
         Text = "Сгенерировать",
-        Dock = DockStyle.Fill,
+        Width = 220,
     };
 
-    private Button imageSaveButton = new()
+    private readonly MyButton imageSaveMyButton = new()
     {
         Text = "Сохранить",
-        Dock = DockStyle.Fill,
+        Width = 174,
     };
     
     public PushButtonPanel()
     {
         Dock = DockStyle.Fill;
-        RowStyles.Add(new RowStyle(SizeType.AutoSize));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 230));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 167));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 220));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 133));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 170));
+        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 123));
+        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180));
         
-        Controls.Add(textUploadButton, 0, 0);
-        Controls.Add(new Panel(), 1, 0);
-        Controls.Add(cloudGenerationButton, 2, 0);
-        Controls.Add(new Panel(), 3, 0);
-        Controls.Add(imageSaveButton, 4, 0);
+        Controls.Add(textUploadMyButton, 0, 0);
+        Controls.Add(new Panel {Dock = DockStyle.Fill}, 1, 0);
+        Controls.Add(cloudGenerationMyButton, 2, 0);
+        Controls.Add(new Panel { Dock = DockStyle.Fill }, 3, 0);
+        Controls.Add(imageSaveMyButton, 4, 0);
     }
 }

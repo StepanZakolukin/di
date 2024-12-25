@@ -34,6 +34,7 @@ partial class TagCloudConfigurationForm
         MaximizeBox = false;
         Size = new Size(1018, 847);
         FormBorderStyle = FormBorderStyle.FixedSingle;
+        Padding = new Padding(40, 35, 40, 35);
         Text = "Облака тегов";
     }
 
