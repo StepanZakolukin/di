@@ -9,5 +9,6 @@ public class PartOfSpeechFilter : MyTreeView
     public PartOfSpeechFilter(IVisualizationProvider visualizationProvider) : base("Исключить части речи:")
     {
         this.visualizationProvider = visualizationProvider;
+        TreeView.Margin = new Padding(0, 0, 0, 14);
     }
 }
