@@ -24,9 +24,9 @@ public sealed class PushButtonPanel : TableLayoutPanel
     {
         Dock = DockStyle.Fill;
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 230));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 167));
+        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 174));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 220));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 123));
+        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 116));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180));
         
         Controls.Add(textUploadMyButton, 0, 0);
