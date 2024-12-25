@@ -5,5 +5,6 @@ namespace TagCloud.ImageGeneration;
 
 public interface IColorPicker
 {
+    public string Name { get; }
     public Color GetColorForWord(WordInfo word);
 }

@@ -4,6 +4,7 @@ namespace TagCloud.CloudLayout;
 
 public class CircularCloud(Point center) : ILayoutProvider
 {
+    public string Name => "Круглая форма";
     private const double AngleChangeStep = Math.PI / 180;
     private int DistanceBetweenTurns { get; set; } = 30;
     private int InitialRadiusOfSpiral { get; set; }

@@ -16,6 +16,8 @@ public class ColorPicker : IColorPicker
         this.totalNumberWords = totalNumberWords;
     }*/
 
+    public string Name { get; } = "Красный цвет";
+
     public Color GetColorForWord(WordInfo word)
     {
         /*if (word.NumberInText > totalNumberWords)

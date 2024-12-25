@@ -31,8 +31,10 @@ partial class TagCloudConfigurationForm
     {
         this.components = new System.ComponentModel.Container();
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(800, 450);
-        this.Text = "Form1";
+        MaximizeBox = false;
+        Size = new Size(1018, 847);
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        Text = "Облака тегов";
     }
 
     #endregion

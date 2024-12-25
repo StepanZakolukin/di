@@ -1,16 +1,30 @@
+using Microsoft.Extensions.DependencyInjection;
+using TagCloud.CloudLayout;
+using TagCloud.ImageGeneration;
+using TagCloud.TextProcessing;
+using Point = TagCloud.CloudLayout.Point;
+
 namespace TagCloudGUI;
 
 static class Program
 {
-    /// <summary>
-    ///  The main entry point for the application.
-    /// </summary>
     [STAThread]
     static void Main()
     {
-        // To customize application configuration such as set high DPI settings or default font,
-        // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
-        Application.Run(new TagCloudConfigurationForm());
+        var services = new ServiceCollection();
+        services.AddSingleton<IVisualizationProvider, VisualizationCloudLayout>();
+        services.AddSingleton<IColorPicker, ColorPicker>();
+        services.AddSingleton<ILayoutProvider, CircularCloud>();
+        services.AddSingleton<IWordsProvider, TextPreprocessing>();
+        services.AddSingleton<Form, TagCloudConfigurationForm>();
+        
+        var provider = services.BuildServiceProvider();
+        var imageSize = provider.GetService<IVisualizationProvider>().ImageSize;
+        services.AddScoped<Point>(_ => new Point(imageSize.Width / 2, imageSize.Height / 2));
+        
+        provider = services.BuildServiceProvider();
+        var form = provider.GetService<Form>();
+        Application.Run(form);
     }
 }

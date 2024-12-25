@@ -4,13 +4,12 @@ using TagCloud.TextProcessing;
 
 namespace TagCloud.ImageGeneration;
 
-public class VisualizationCloudLayout
+public class VisualizationCloudLayout : IVisualizationProvider
 {
-    private readonly int numberOfWords;
     private float coefficient;
-    private readonly IColorPicker colorPicker;
-    private readonly ILayoutProvider layoutProvider;
-    private readonly IEnumerable<WordInfo> wordsInfo;
+    public IColorPicker ColorPicker { get; set; }
+    public ILayoutProvider LayoutProvider { get; set; }
+    private IEnumerable<WordInfo> WordsInfo { get; set; }
     public Size ImageSize { get; set; } = new(1080, 1080);
     public FontFamily FontFamily { get; set; } = new("Arial");
 
@@ -20,26 +19,22 @@ public class VisualizationCloudLayout
         get => cloudCompressionRatio;
         set
         {
-            if (1 - value < 0.01 || value < 0.01)
+            if (value - 1 < 0.001 || value < 0.001)
                 throw new ArgumentException("Должно быть больше 0, но меньше или равно единице", nameof(value));
             
             cloudCompressionRatio = value;
-            coefficient = ImageSize.Width * cloudCompressionRatio / numberOfWords;
         }
     }
     
-    public VisualizationCloudLayout(IColorPicker colorPicker,
-        ILayoutProvider layoutProvider, IEnumerable<WordInfo> words)
+    public VisualizationCloudLayout()
     {
-        wordsInfo = words;
-        numberOfWords = words.Count();
         CloudCompressionRatio = 0.8f;
-        this.colorPicker = colorPicker;
-        this.layoutProvider = layoutProvider;
     }
 
-    public Bitmap CreateImage()
+    public Bitmap CreateImage(IEnumerable<WordInfo> words)
     {
+        WordsInfo = words;
+        coefficient = ImageSize.Width * cloudCompressionRatio / WordsInfo.Count();
         var image = new Bitmap(ImageSize.Width, ImageSize.Height);
         DrawСloudOfWords(Graphics.FromImage(image));
 
@@ -48,13 +43,13 @@ public class VisualizationCloudLayout
 
     private void DrawСloudOfWords(Graphics graphics)
     {
-        foreach (var word in wordsInfo)
+        foreach (var word in WordsInfo)
         {
-            var color = colorPicker.GetColorForWord(word);
+            var color = ColorPicker.GetColorForWord(word);
             var height = word.NumberInText * coefficient;
             var font = new Font(FontFamily, height, GraphicsUnit.Pixel);
             var size = graphics.MeasureString(word.Word, font);
-            var location = layoutProvider.PutNextRectangle(size);
+            var location = LayoutProvider.PutNextRectangle(size);
 
             graphics.DrawString(word.Word, font, new SolidBrush(color), location);
         }

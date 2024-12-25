@@ -2,6 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework.Interfaces;
 using TagCloud.CloudLayout;
+using Point = TagCloud.CloudLayout.Point;
 
 namespace TagCloud.Tests;
 
