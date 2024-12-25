@@ -9,20 +9,10 @@ namespace TagCloudGUI.Controls;
 public class ImageSizeSettings : TableLayoutPanel
 {
     private static readonly Padding margin = new Padding(0, 0, 0, 14);
-    
-    public Label Heading { get; set; } = new()
-    {
-        Dock = DockStyle.Fill,
-        Text = "Размеры изображения:",
-        Margin = margin,
-    };
 
-    private readonly Label widthLabel = new()
-    {
-        Text = "Ширина:",
-        Dock = DockStyle.Fill,
-        Margin = margin,
-    };
+    public MyLabel Heading { get; set; } = new("Размеры изображения:");
+
+    private readonly MyLabel widthLabel = new("Ширина:");
 
     private readonly TextBox widthTextBox = new()
     {
@@ -30,12 +20,7 @@ public class ImageSizeSettings : TableLayoutPanel
         Margin = margin,
     };
 
-    private readonly Label heightLabel = new()
-    {
-        Text = "Высота:",
-        Dock = DockStyle.Fill,
-        Margin = margin,
-    };
+    private readonly MyLabel heightLabel = new("Высота:");
     
     private readonly TextBox heightTextBox = new()
     {
@@ -43,19 +28,9 @@ public class ImageSizeSettings : TableLayoutPanel
         Margin = margin,
     };
 
-    private readonly Label widthUnitsOfMeasurement = new()
-    {
-        Text = "px.",
-        Dock = DockStyle.Fill,
-        Margin = margin,
-    };
+    private readonly MyLabel widthUnitsOfMeasurement = new("px.");
 
-    private readonly Label heightUnitsOfMeasurement = new()
-    {
-        Text = "px.",
-        Dock = DockStyle.Fill,
-        Margin = margin,
-    };
+    private readonly MyLabel heightUnitsOfMeasurement = new("px.");
     
     private readonly IVisualizationProvider visualizationProvider;
     

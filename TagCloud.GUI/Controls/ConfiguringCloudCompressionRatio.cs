@@ -7,11 +7,9 @@ namespace TagCloudGUI.Controls;
 
 public class ConfiguringCloudCompressionRatio : TableLayoutPanel
 {
-    private readonly Label heading = new()
+    private readonly MyLabel heading = new("Коэф. сжатия облака:")
     {
-        Text = "Коэф. сжатия облака:",
         TextAlign = ContentAlignment.MiddleLeft,
-        Dock = DockStyle.Fill,
     };
 
     private readonly TextBox coefficient = new()

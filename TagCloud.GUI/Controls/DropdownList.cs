@@ -9,12 +9,8 @@ public class DropdownList : TableLayoutPanel
 {
     private static readonly Padding margin = new(0, 0, 0, 14);
     protected readonly IVisualizationProvider VisualizationProvider;
-    
-    private readonly Label heading = new()
-    {
-        Margin = margin,
-        Dock = DockStyle.Fill,
-    };
+
+    private readonly MyLabel heading;
     protected ComboBox DropDownList { get; init; } = new()
     {
         Margin = margin,
@@ -24,7 +20,7 @@ public class DropdownList : TableLayoutPanel
     public DropdownList(string heading, IEnumerable<string> list, IVisualizationProvider visualizationProvider)
     {
         Dock = DockStyle.Fill;
-        this.heading.Text = heading;
+        this.heading = new(heading);
         VisualizationProvider = visualizationProvider;
         
         DropDownList.Items.AddRange(list.ToArray());

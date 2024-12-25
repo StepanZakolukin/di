@@ -2,11 +2,7 @@ namespace TagCloudGUI.Controls;
 
 public class MyTreeView : TableLayoutPanel
 {
-    private readonly Label heading = new()
-    {
-        Dock = DockStyle.Fill,
-        Margin = new Padding(0, 0, 0, 14),
-    };
+    private readonly MyLabel heading;
     
     protected readonly TreeView TreeView = new()
     {
@@ -16,7 +12,7 @@ public class MyTreeView : TableLayoutPanel
     public MyTreeView(string heading)
     {
         Dock = DockStyle.Fill;
-        this.heading.Text = heading;
+        this.heading = new(heading);
         ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         RowStyles.Add(new RowStyle(SizeType.Absolute, 54));
         RowStyles.Add(new RowStyle(SizeType.Absolute, 270));
