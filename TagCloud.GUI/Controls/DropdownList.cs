@@ -7,21 +7,19 @@ namespace TagCloudGUI.Controls;
 
 public class DropdownList : TableLayoutPanel
 {
-    private static readonly Padding margin = new(0, 0, 0, 14);
-    protected readonly IVisualizationProvider VisualizationProvider;
-
     private readonly MyLabel heading;
+    protected readonly TagCloudConfigurationForm ParentForm;
     protected ComboBox DropDownList { get; init; } = new()
     {
-        Margin = margin,
+        Margin = new Padding(0, 0, 0, 14),
         Dock = DockStyle.Fill,
     };
     
-    public DropdownList(string heading, IEnumerable<string> list, IVisualizationProvider visualizationProvider)
+    public DropdownList(string heading, IEnumerable<string> list, TagCloudConfigurationForm parentForm)
     {
         Dock = DockStyle.Fill;
+        ParentForm = parentForm;
         this.heading = new(heading);
-        VisualizationProvider = visualizationProvider;
         
         DropDownList.Items.AddRange(list.ToArray());
         

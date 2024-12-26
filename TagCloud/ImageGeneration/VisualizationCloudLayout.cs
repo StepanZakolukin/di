@@ -7,11 +7,11 @@ namespace TagCloud.ImageGeneration;
 public class VisualizationCloudLayout : IVisualizationProvider
 {
     private float coefficient;
-    public IColorPicker ColorPicker { get; set; }
-    public ILayoutProvider LayoutProvider { get; set; }
+    private IColorPicker ColorPicker { get; set; }
+    private ILayoutProvider LayoutProvider { get; set; }
     private IEnumerable<WordInfo> WordsInfo { get; set; }
     public Size ImageSize { get; set; } = new(1080, 1080);
-    public FontFamily FontFamily { get; set; }
+    public FontFamily FontFamily { get; set; } = new("Arial");
 
     private float cloudCompressionRatio;
     public float CloudCompressionRatio
@@ -20,7 +20,7 @@ public class VisualizationCloudLayout : IVisualizationProvider
         set
         {
             if (value < 0.001 || value > 1.001)
-                throw new ArgumentException("Должно быть больш е 0, но меньше или равно единице", nameof(value));
+                throw new ArgumentException("Должно быть больше 0, но меньше или равно единице", nameof(value));
             
             cloudCompressionRatio = value;
         }
@@ -31,9 +31,11 @@ public class VisualizationCloudLayout : IVisualizationProvider
         CloudCompressionRatio = 0.8f;
     }
 
-    public Bitmap CreateImage(IEnumerable<WordInfo> words)
+    public Bitmap CreateImage(IEnumerable<WordInfo> words, IColorPicker colorPicker, ILayoutProvider layoutProvider)
     {
         WordsInfo = words;
+        ColorPicker = colorPicker;
+        LayoutProvider = layoutProvider;
         coefficient = ImageSize.Width * cloudCompressionRatio / WordsInfo.Count();
         var image = new Bitmap(ImageSize.Width, ImageSize.Height);
         DrawСloudOfWords(Graphics.FromImage(image));

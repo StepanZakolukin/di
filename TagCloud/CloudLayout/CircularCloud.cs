@@ -54,4 +54,9 @@ public class CircularCloud(Point center) : ILayoutProvider
 
         return new PointF(x, y);
     }
+
+    public ILayoutProvider ResetLayout()
+    {
+        return new CircularCloud(Center);
+    }
 }

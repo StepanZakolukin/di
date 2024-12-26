@@ -8,7 +8,7 @@ namespace TagCloudGUI.Controls;
 
 public class ImageSizeSettings : TableLayoutPanel
 {
-    private static readonly Padding margin = new Padding(0, 0, 0, 14);
+    private static readonly Padding margin = new(0, 0, 0, 14);
 
     public MyLabel Heading { get; set; } = new("Размеры изображения:");
 
@@ -47,38 +47,22 @@ public class ImageSizeSettings : TableLayoutPanel
         Controls.Add(Heading, 0, 0);
         Controls.Add(CreateNestedTable(), 0, 1);
 
-        heightTextBox.TextChanged += ProcessHeightChange;
-        widthTextBox.TextChanged += ProcessWidthChange;
+        heightTextBox.TextChanged += ProcessImageSizeChange;
+        widthTextBox.TextChanged += ProcessImageSizeChange;
     }
 
-    private void ProcessHeightChange(object sender, EventArgs args)
+    private void ProcessImageSizeChange(object? sender, EventArgs args)
     {
-        if (int.TryParse(heightTextBox.Text, out var height) && height > 0)
+        if (int.TryParse(heightTextBox.Text, out var height) && height > 0 &&
+            int.TryParse(widthTextBox.Text, out var width) && width > 0)
         {
-            visualizationProvider.ImageSize = visualizationProvider.ImageSize with
-            {
-                Height = height,
-            };
+            visualizationProvider.ImageSize = new Size(width, height);
             heightTextBox.BackColor = Color.White;
-        }
-        else
-        {
-            heightTextBox.BackColor = Color.Red;
-        }
-    }
-    
-    private void ProcessWidthChange(object sender, EventArgs args)
-    {
-        if (int.TryParse(widthTextBox.Text, out var width) && width > 0)
-        {
-            visualizationProvider.ImageSize = visualizationProvider.ImageSize with
-            {
-                Width = width
-            };
             widthTextBox.BackColor = Color.White;
         }
         else
         {
+            heightTextBox.BackColor = Color.Red;
             widthTextBox.BackColor = Color.Red;
         }
     }

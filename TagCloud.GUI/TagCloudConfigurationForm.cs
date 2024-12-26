@@ -8,6 +8,54 @@ namespace TagCloudGUI;
 
 public partial class TagCloudConfigurationForm : Form
 {
+    private IEnumerable<WordInfo>? words;
+    public IEnumerable<WordInfo>? Words
+    {
+        get => words;
+        set
+        {
+            words = value;
+            TextIsUploaded?.Invoke();
+            DataHasBeenUpdated?.Invoke(CheckCorrectnessOfData());
+        }
+    }
+
+    private IColorPicker? colorPicker;
+    public IColorPicker? ColorPicker
+    {
+        get => colorPicker;
+        set
+        {
+            colorPicker = value;
+            DataHasBeenUpdated?.Invoke(CheckCorrectnessOfData());
+        }
+    }
+    
+    private ILayoutProvider? layoutProvider;
+    public ILayoutProvider? LayoutProvider
+    {
+        get => layoutProvider;
+        set
+        {
+            layoutProvider = value;
+            DataHasBeenUpdated?.Invoke(CheckCorrectnessOfData());
+        }
+    }
+
+    private bool everythingIsPrepared = false;
+    public bool EverythingIsPrepared
+    {
+        get => everythingIsPrepared;
+        set
+        {
+            everythingIsPrepared = value;
+            if (value) SetupIsFinished?.Invoke();
+        }
+    }
+    public event Action? SetupIsFinished;
+    public event Action<bool>? DataHasBeenUpdated;
+    public event Action? TextIsUploaded;
+    
     public TagCloudConfigurationForm(IVisualizationProvider visualizationProvider, IEnumerable<IColorPicker> colorPickers,
         IEnumerable<ILayoutProvider> layoutProviders)
     {
@@ -19,49 +67,15 @@ public partial class TagCloudConfigurationForm : Form
         table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
         table.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
         
-        table.Controls.Add(new SettingsTable(visualizationProvider, colorPickers, layoutProviders) { Dock = DockStyle.Fill }, 0, 0);
+        table.Controls.Add(new SettingsTable(visualizationProvider, colorPickers, layoutProviders, this) { Dock = DockStyle.Fill }, 0, 0);
         table.Controls.Add(new Panel { Dock = DockStyle.Fill }, 0, 1);
-        table.Controls.Add(new PushButtonPanel(), 0, 2);
+        table.Controls.Add(new PushButtonPanel(visualizationProvider, this), 0, 2);
         
         Controls.Add(table);
     }
-    
-    private void Method()
-    {
-        var label = new Label
-        {
-            /*Location = new Point(300, 50),*/
-            Size = new Size(200, 50),
-            BackColor = Color.White,
-        };
-        Controls.Add(label);
-        var fileUploadButton = new Button
-        {
-            /*Location = new Point(10, 10),*/
-            Size = new Size(100, 50),
-            Text = "Загрузить текст"
-        };
-        fileUploadButton.Click += SelectFile;
-        Controls.Add(fileUploadButton);
-    }
 
-    private void SelectFile(object sender, EventArgs e)
+    private bool CheckCorrectnessOfData()
     {
-        OpenFileDialog openFileDialog = new OpenFileDialog();
-    
-        // Настройка диалога
-        /*openFileDialog.Filter = "(*.txt)";*/
-        /*openFileDialog.FilterIndex = 1;*/
-        /*openFileDialog.RestoreDirectory = true;*/
-
-        // Открытие диалога и получение результата
-        if (openFileDialog.ShowDialog() == DialogResult.OK)
-        {
-            var filePath = openFileDialog.FileName;
-        
-            // Здесь вы можете обработать выбранный файл
-            var textHandler = new TextPreprocessing();
-            /*Words = textHandler.PerformPreprocessing(filePath);*/
-        }
+        return Words is not null && ColorPicker is not null && LayoutProvider is not null;
     }
 }

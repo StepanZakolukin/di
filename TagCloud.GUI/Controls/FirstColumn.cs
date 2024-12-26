@@ -8,7 +8,7 @@ namespace TagCloudGUI.Controls;
 public class FirstColumn : TableLayoutPanel
 {
     public FirstColumn(IVisualizationProvider visualizationProvider, IEnumerable<IColorPicker> colorPickers,
-        IEnumerable<ILayoutProvider> layoutProviders)
+        IEnumerable<ILayoutProvider> layoutProviders, TagCloudConfigurationForm parentForm)
     {
         Dock = DockStyle.Fill;
         ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
@@ -19,9 +19,9 @@ public class FirstColumn : TableLayoutPanel
         RowStyles.Add(new RowStyle(SizeType.AutoSize));
         
         Controls.Add(new ImageSizeSettings(visualizationProvider), 0, 0);
-        Controls.Add(new FontSettings(visualizationProvider),0, 1);
-        Controls.Add(new ColorSettings(colorPickers, visualizationProvider),0, 2);
-        Controls.Add(new SettingUpLayoutAlgorithm(visualizationProvider, layoutProviders), 0, 3);
+        Controls.Add(new FontSettings(visualizationProvider, parentForm),0, 1);
+        Controls.Add(new ColorSettings(colorPickers, parentForm),0, 2);
+        Controls.Add(new SettingUpLayoutAlgorithm(layoutProviders, parentForm), 0, 3);
         Controls.Add(new ConfiguringCloudCompressionRatio(visualizationProvider), 0, 4);
         Controls.Add(new Panel { Dock = DockStyle.Fill }, 0, 5);
     }

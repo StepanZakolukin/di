@@ -44,13 +44,15 @@ public class TextPreprocessing : IWordsProvider
     
     private string[] ParseText(string pathToSourceTxtFile)
     {
-        var outputFile = "TextProcessing/out.txt";
+        var outputFile = "out.txt";
+        File.Create(outputFile).Close();
+        
         var startInfo = new ProcessStartInfo
         {
             UseShellExecute = false,
             RedirectStandardInput = false,
             RedirectStandardOutput = false,
-            FileName = "TextProcessing/mystem.exe",
+            FileName = "TextProcessing/Mystem.exe",
             Arguments = $"-ling {pathToSourceTxtFile} {outputFile}",
         };
         

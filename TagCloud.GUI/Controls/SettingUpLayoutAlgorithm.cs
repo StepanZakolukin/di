@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 using TagCloud.CloudLayout;
-using TagCloud.ImageGeneration;
 
 namespace TagCloudGUI.Controls;
 
 public class SettingUpLayoutAlgorithm : DropdownList
 {
     private Dictionary<string, ILayoutProvider> layoutProviders = new();
-    public SettingUpLayoutAlgorithm(IVisualizationProvider visualizationProvider, IEnumerable<ILayoutProvider> layoutProviders)
-        : base("Алгоритм генерации раскладки:", layoutProviders.Select(provider => provider.Name), visualizationProvider)
+    public SettingUpLayoutAlgorithm(IEnumerable<ILayoutProvider> layoutProviders, TagCloudConfigurationForm parentForm)
+        : base("Алгоритм генерации раскладки:", layoutProviders.Select(provider => provider.Name), parentForm)
     {
         foreach (var provider in layoutProviders)
             this.layoutProviders[provider.Name] = provider;
@@ -22,6 +17,6 @@ public class SettingUpLayoutAlgorithm : DropdownList
     private void LayoutProviderIsSelected(object? sender, EventArgs e)
     {
         var dropdownList = sender as ComboBox;
-        VisualizationProvider.LayoutProvider = layoutProviders[dropdownList.SelectedItem.ToString()];
+        ParentForm.LayoutProvider = layoutProviders[dropdownList.SelectedItem.ToString()];
     }
 }

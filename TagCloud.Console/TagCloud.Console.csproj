@@ -16,9 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="FilesWithTexts\Колобок.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="Images\CentralСloud.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
