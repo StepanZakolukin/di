@@ -18,6 +18,6 @@ public class SettingsTable : TableLayoutPanel
         
         Controls.Add(new FirstColumn(visualizationProvider, colorPickers, layoutProviders, parentForm), 0, 0);
         Controls.Add(new Panel {Dock = DockStyle.Fill}, 1, 0);
-        Controls.Add(new SecondColumn(visualizationProvider, parentForm), 2, 0);
+        Controls.Add(new SecondColumn(parentForm), 2, 0);
     }
 }

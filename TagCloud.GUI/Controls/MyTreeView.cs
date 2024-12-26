@@ -2,7 +2,7 @@ namespace TagCloudGUI.Controls;
 
 public class MyTreeView : TableLayoutPanel
 {
-    protected readonly TagCloudConfigurationForm ParentForm;
+    protected TagCloudConfigurationForm ParentForm;
     private readonly MyLabel heading;
     
     protected readonly TreeView TreeView = new()
@@ -30,7 +30,7 @@ public class MyTreeView : TableLayoutPanel
     {
         for (var i = 0; i < TreeView.Nodes.Count; i++)
         {
-            if (TreeView.Nodes[i].IsSelected)
+            if (TreeView.Nodes[i].Checked)
                 yield return TreeView.Nodes[i].Text;
         }
     }

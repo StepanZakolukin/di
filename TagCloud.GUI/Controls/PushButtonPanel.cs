@@ -73,21 +73,21 @@ public sealed class PushButtonPanel : TableLayoutPanel
     private void GenerateImage(object? sender, EventArgs e)
     {
         ParentForm.EverythingIsPrepared = true;
-        image = visualizationProvider.CreateImage(ParentForm.Words, ParentForm.ColorPicker, ParentForm.LayoutProvider);
+        image = visualizationProvider.CreateImage(ParentForm.FilterWords, ParentForm.ColorPicker, ParentForm.LayoutProvider);
         imageSaveButton.Enabled = true;
         ParentForm.LayoutProvider = ParentForm.LayoutProvider.ResetLayout();
     }
 
     private void SaveImage(object? sender, EventArgs e)
     {
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        var saveFileDialog = new SaveFileDialog();
         saveFileDialog.Filter = "Изображение (*.png)|*.png";
         saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         saveFileDialog.Title = "Сохранение файла";
 
         if (saveFileDialog.ShowDialog() == DialogResult.OK)
         {
-            string filePath = saveFileDialog.FileName;
+            var filePath = saveFileDialog.FileName;
             image.Save(filePath);
         }
         

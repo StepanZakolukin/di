@@ -8,6 +8,7 @@ namespace TagCloudGUI;
 
 public partial class TagCloudConfigurationForm : Form
 {
+    public IEnumerable<WordInfo>? FilterWords;
     private IEnumerable<WordInfo>? words;
     public IEnumerable<WordInfo>? Words
     {

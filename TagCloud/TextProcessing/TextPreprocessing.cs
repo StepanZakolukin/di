@@ -30,10 +30,10 @@ public class TextPreprocessing : IWordsProvider
         for (var i = 0; i < textInfo.Length - 1; i++)
         {
             var info = textInfo[i].Split('=');
+            if (info.Length < 2) continue;
             var wordAndPartOfSpeech = Tuple.Create(info[0], info[1].Split(',')[0]);
-            if (countingDictionary.ContainsKey(wordAndPartOfSpeech))
+            if (!countingDictionary.TryAdd(wordAndPartOfSpeech, 1))
                 countingDictionary[wordAndPartOfSpeech]++;
-            else countingDictionary[wordAndPartOfSpeech] = 1;
         }
 
         return countingDictionary.Select(pair => 

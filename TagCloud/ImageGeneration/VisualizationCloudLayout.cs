@@ -49,7 +49,7 @@ public class VisualizationCloudLayout : IVisualizationProvider
         {
             var color = ColorPicker.GetColorForWord(word);
             var height = word.NumberInText * coefficient;
-            var font = new Font(FontFamily, height, GraphicsUnit.Pixel);
+            var font = new Font(FontFamily, height * 5, GraphicsUnit.Pixel);
             var size = graphics.MeasureString(word.Word, font);
             var location = LayoutProvider.PutNextRectangle(size);
 

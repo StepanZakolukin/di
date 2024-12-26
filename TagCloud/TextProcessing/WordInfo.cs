@@ -1,9 +1,9 @@
 namespace TagCloud.TextProcessing;
 
-public class WordInfo
+public record WordInfo 
 {
     public string Word { get; }
-    public string PartOfSpeech { get; init; }
+    public string PartOfSpeach { get; init; }
     public int NumberInText { get; }
     
     private readonly HashSet<string> partsOfSpeech =
@@ -24,12 +24,12 @@ public class WordInfo
         "глагол"
     ];
     
-    public WordInfo(string word, string partOfSpeech, int numberInText)
+    public WordInfo(string word, string partOfSpeach, int numberInText)
     {
         Word = word;
-        if (!partsOfSpeech.Contains(partOfSpeech))
-            throw new ArgumentException("Некорректная чаcть речи", nameof(partOfSpeech));
-        PartOfSpeech = partOfSpeech;
+        if (!partsOfSpeech.Contains(partOfSpeach))
+            throw new ArgumentException("Некорректная чаcть речи", nameof(partOfSpeach));
+        PartOfSpeach = partOfSpeach;
         NumberInText = numberInText;
     }
 }
