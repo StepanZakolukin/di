@@ -26,4 +26,16 @@
       <ProjectReference Include="..\TagCloud\TagCloud.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Texts\Checking the count.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Texts\Eugene Onegin.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Texts\Morozko.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
