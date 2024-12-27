@@ -19,8 +19,8 @@ public partial class TagCloudConfigurationForm : Form
         IEnumerable<IColorPicker> colorPickers,
         IEnumerable<ILayoutProvider> layoutProviders)
     {
-        Font = new Font("Arial", 22, FontStyle.Regular, GraphicsUnit.Pixel);
         InitializeComponent();
+        Font = new Font("Arial", 22, FontStyle.Regular, GraphicsUnit.Pixel);
         var table = new TableLayoutPanel { Dock = DockStyle.Fill };
         table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         table.RowStyles.Add(new RowStyle(SizeType.Absolute, 662));

@@ -25,7 +25,7 @@ public class VisualizationCloudLayout : IVisualizationProvider
         get => cloudCompressionRatio;
         set
         {
-            if (value < 0.001 || value > 1.001)
+            if (value < 0.501 || value > 2.001)
                 throw new ArgumentException("Должно быть больше 0, но меньше или равно единице", nameof(value));
 
             cloudCompressionRatio = value;
@@ -50,7 +50,7 @@ public class VisualizationCloudLayout : IVisualizationProvider
         {
             var color = ColorPicker.GetColorForWord(word);
             var height = word.NumberInText * coefficient;
-            var font = new Font(FontFamily, height * 5, GraphicsUnit.Pixel);
+            var font = new Font(FontFamily, height, GraphicsUnit.Pixel);
             var size = graphics.MeasureString(word.Word, font);
             var location = LayoutProvider.PutNextRectangle(size);
 

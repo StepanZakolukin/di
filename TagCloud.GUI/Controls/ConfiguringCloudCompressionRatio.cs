@@ -33,7 +33,7 @@ public class ConfiguringCloudCompressionRatio : TableLayoutPanel
 
     private void CoefficientHasChanged(object? sender, EventArgs e)
     {
-        if (float.TryParse(coefficient.Text, out var number) && number > 0.001 && number < 1.001)
+        if (float.TryParse(coefficient.Text, out var number) && number > 0.501 && number < 2.001)
         {
             coefficient.BackColor = Color.White;
             visualizationProvider.CloudCompressionRatio = number;
