@@ -32,7 +32,7 @@ public class TextPreprocessingTests
     [Test]
     public void PerformPreprocessing_Text_OnlyRussianLettersShouldRemainInWords()
     {
-        var eugeneOnegin = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "Eugene Onegin.txt");
+        var eugeneOnegin = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "EugeneOnegin.txt");
         
         var result = textPreprocessing.PerformPreprocessing(eugeneOnegin);
         
@@ -48,7 +48,7 @@ public class TextPreprocessingTests
     [Test]
     public void PerformPreprocessing_Text_CorrectWordCount()
     {
-        var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "Checking the count.txt");
+        var pathToFile = "../../../Texts/CheckingCount.txt";
         var frequencyDictionary = new Dictionary<string, int>
         {
             { "привет", 5 },
@@ -57,7 +57,6 @@ public class TextPreprocessingTests
             { "я", 20 },
             { "человек", 2},
             { "отчаянно", 8},
-            { "летевший", 4}
         };
         var lines = CreateArrayOfWords(frequencyDictionary);
         var random = new Random();

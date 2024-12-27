@@ -53,7 +53,8 @@ public class TextPreprocessing : IWordsProvider
             RedirectStandardInput = false,
             RedirectStandardOutput = false,
             FileName = "TextProcessing/Mystem.exe",
-            Arguments = $"-ling {pathToSourceTxtFile} {outputFile}"
+            Arguments = $"-ling {pathToSourceTxtFile} {outputFile}",
+            CreateNoWindow = true
         };
 
         var process = new Process { StartInfo = startInfo };

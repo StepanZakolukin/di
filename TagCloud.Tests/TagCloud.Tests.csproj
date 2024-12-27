@@ -27,8 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Texts\Checking the count.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <None Update="Texts\CheckingCount.txt">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </None>
       <None Update="Texts\Eugene Onegin.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
