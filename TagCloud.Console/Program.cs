@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Drawing.Text;
 using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
 using TagCloud.TextProcessing;
@@ -17,6 +16,7 @@ public static class Program
         var visual = new VisualizationCloudLayout();
         visual.ImageSize = new Size(1080, 1080);
         for (var i = 0; i < 5; i++)
-            visual.CreateImage(words, new ColorPicker(), new CircularCloud(new Point(540, 540))).Save($"C:/Users/stepa/Desktop/Колобок{i}.png");
+            visual.CreateImage(words, new ColorPicker(), new CircularCloud(new Point(540, 540)))
+                .Save($"C:/Users/stepa/Desktop/Колобок{i}.png");
     }
 }

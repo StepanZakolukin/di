@@ -4,13 +4,14 @@ namespace TagCloudGUI.Controls;
 
 public class SettingUpLayoutAlgorithm : DropdownList
 {
-    private Dictionary<string, ILayoutProvider> layoutProviders = new();
+    private readonly Dictionary<string, ILayoutProvider> layoutProviders = new();
+
     public SettingUpLayoutAlgorithm(IEnumerable<ILayoutProvider> layoutProviders, TagCloudConfigurationForm parentForm)
         : base("Алгоритм генерации раскладки:", layoutProviders.Select(provider => provider.Name), parentForm)
     {
         foreach (var provider in layoutProviders)
             this.layoutProviders[provider.Name] = provider;
-        
+
         DropDownList.SelectedIndexChanged += LayoutProviderIsSelected;
     }
 

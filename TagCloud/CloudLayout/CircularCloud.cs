@@ -4,15 +4,15 @@ namespace TagCloud.CloudLayout;
 
 public class CircularCloud(Point center) : ILayoutProvider
 {
-    public string Name => "Круглая форма";
     private const double AngleChangeStep = Math.PI / 180;
+
+    private readonly LinkedList<RectangleF> cloudOfRectangles = [];
     private int DistanceBetweenTurns { get; set; } = 30;
     private int InitialRadiusOfSpiral { get; set; }
     private double AngleOfRotationInRadians { get; set; }
+    public string Name => "Круглая форма";
 
-    private readonly LinkedList<RectangleF> cloudOfRectangles = [];
-
-    public readonly Point Center = center;
+    public Point Center { get; set; } = center;
 
     public RectangleF PutNextRectangle(SizeF rectangleSize)
     {
@@ -25,6 +25,11 @@ public class CircularCloud(Point center) : ILayoutProvider
         cloudOfRectangles.AddFirst(rectangle);
 
         return rectangle;
+    }
+
+    public ILayoutProvider ResetLayout()
+    {
+        return new CircularCloud(Center);
     }
 
     private RectangleF ChooseLocationForRectangle(SizeF rectangleSize)
@@ -42,9 +47,11 @@ public class CircularCloud(Point center) : ILayoutProvider
         return rectangle;
     }
 
-    private RectangleF GetNewRectangle(PointF centerPoint, SizeF rectangleSize) =>
-        new(new PointF(centerPoint.X - rectangleSize.Width / 2,
+    private RectangleF GetNewRectangle(PointF centerPoint, SizeF rectangleSize)
+    {
+        return new RectangleF(new PointF(centerPoint.X - rectangleSize.Width / 2,
             centerPoint.Y - rectangleSize.Height / 2), rectangleSize);
+    }
 
     private PointF GetNewPoint()
     {
@@ -53,10 +60,5 @@ public class CircularCloud(Point center) : ILayoutProvider
         var y = (float)(coefficient * Math.Sin(AngleOfRotationInRadians) + Center.Y);
 
         return new PointF(x, y);
-    }
-
-    public ILayoutProvider ResetLayout()
-    {
-        return new CircularCloud(Center);
     }
 }

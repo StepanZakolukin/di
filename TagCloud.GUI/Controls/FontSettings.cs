@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Text;
-using System.Linq;
-using System.Windows.Forms;
 using TagCloud.ImageGeneration;
 
 namespace TagCloudGUI.Controls;
 
 public class FontSettings : DropdownList
 {
-    private readonly IVisualizationProvider visualizationProvider;
     private static readonly IEnumerable<string> FontFamilies = new InstalledFontCollection().Families
         .Select(family => family.Name);
-    
-    public FontSettings(IVisualizationProvider visualizationProvider, TagCloudConfigurationForm parentForm) 
+
+    private readonly IVisualizationProvider visualizationProvider;
+
+    public FontSettings(IVisualizationProvider visualizationProvider, TagCloudConfigurationForm parentForm)
         : base("Шрифт:", FontFamilies, parentForm)
     {
         Dock = DockStyle.Fill;

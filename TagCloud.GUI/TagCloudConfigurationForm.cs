@@ -2,14 +2,40 @@ using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
 using TagCloud.TextProcessing;
 using TagCloudGUI.Controls;
-using Button = System.Windows.Forms.Button;
 
 namespace TagCloudGUI;
 
 public partial class TagCloudConfigurationForm : Form
 {
+    private IColorPicker? colorPicker;
+
+    private bool everythingIsPrepared;
     public IEnumerable<WordInfo>? FilterWords;
+
+    private ILayoutProvider? layoutProvider;
     private IEnumerable<WordInfo>? words;
+
+    public TagCloudConfigurationForm(IVisualizationProvider visualizationProvider,
+        IEnumerable<IColorPicker> colorPickers,
+        IEnumerable<ILayoutProvider> layoutProviders)
+    {
+        Font = new Font("Arial", 22, FontStyle.Regular, GraphicsUnit.Pixel);
+        InitializeComponent();
+        var table = new TableLayoutPanel { Dock = DockStyle.Fill };
+        table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 662));
+        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
+        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+
+        table.Controls.Add(
+            new SettingsTable(visualizationProvider, colorPickers, layoutProviders, this) { Dock = DockStyle.Fill }, 0,
+            0);
+        table.Controls.Add(new Panel { Dock = DockStyle.Fill }, 0, 1);
+        table.Controls.Add(new PushButtonPanel(visualizationProvider, this), 0, 2);
+
+        Controls.Add(table);
+    }
+
     public IEnumerable<WordInfo>? Words
     {
         get => words;
@@ -21,7 +47,6 @@ public partial class TagCloudConfigurationForm : Form
         }
     }
 
-    private IColorPicker? colorPicker;
     public IColorPicker? ColorPicker
     {
         get => colorPicker;
@@ -31,8 +56,7 @@ public partial class TagCloudConfigurationForm : Form
             DataHasBeenUpdated?.Invoke(CheckCorrectnessOfData());
         }
     }
-    
-    private ILayoutProvider? layoutProvider;
+
     public ILayoutProvider? LayoutProvider
     {
         get => layoutProvider;
@@ -43,7 +67,6 @@ public partial class TagCloudConfigurationForm : Form
         }
     }
 
-    private bool everythingIsPrepared = false;
     public bool EverythingIsPrepared
     {
         get => everythingIsPrepared;
@@ -53,27 +76,10 @@ public partial class TagCloudConfigurationForm : Form
             if (value) SetupIsFinished?.Invoke();
         }
     }
+
     public event Action? SetupIsFinished;
     public event Action<bool>? DataHasBeenUpdated;
     public event Action? TextIsUploaded;
-    
-    public TagCloudConfigurationForm(IVisualizationProvider visualizationProvider, IEnumerable<IColorPicker> colorPickers,
-        IEnumerable<ILayoutProvider> layoutProviders)
-    {
-        Font = new Font("Arial", 22, FontStyle.Regular, GraphicsUnit.Pixel);
-        InitializeComponent();
-        var table = new TableLayoutPanel { Dock = DockStyle.Fill };
-        table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 662));
-        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
-        table.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
-        
-        table.Controls.Add(new SettingsTable(visualizationProvider, colorPickers, layoutProviders, this) { Dock = DockStyle.Fill }, 0, 0);
-        table.Controls.Add(new Panel { Dock = DockStyle.Fill }, 0, 1);
-        table.Controls.Add(new PushButtonPanel(visualizationProvider, this), 0, 2);
-        
-        Controls.Add(table);
-    }
 
     private bool CheckCorrectnessOfData()
     {

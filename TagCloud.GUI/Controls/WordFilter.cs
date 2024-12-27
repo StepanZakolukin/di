@@ -1,5 +1,3 @@
-using TagCloud.ImageGeneration;
-
 namespace TagCloudGUI.Controls;
 
 public class WordFilter : MyTreeView
@@ -9,7 +7,7 @@ public class WordFilter : MyTreeView
     {
         parentForm.TextIsUploaded += FillTreeView;
     }
-    
+
     private void FillTreeView()
     {
         var words = ParentForm.Words.Select(wordInfo => wordInfo.Word);

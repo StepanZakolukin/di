@@ -1,11 +1,9 @@
 ﻿using System.Drawing;
 using FluentAssertions;
-using NUnit.Framework.Interfaces;
 using TagCloud.CloudLayout;
 using Point = TagCloud.CloudLayout.Point;
 
 namespace TagCloud.Tests;
-
 
 [TestFixture]
 public class CircularCloudTests
@@ -44,7 +42,7 @@ public class CircularCloudTests
     {
         var random = new Random();
         var cloudLayouter = new CircularCloud(new Point(960, 540));
-        
+
         for (var i = 0; i < 100; i++)
         {
             var width = random.Next(30, 200);

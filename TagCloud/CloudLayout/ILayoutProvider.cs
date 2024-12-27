@@ -5,6 +5,7 @@ namespace TagCloud.CloudLayout;
 public interface ILayoutProvider
 {
     public string Name { get; }
+    public Point Center { get; set; }
     public ILayoutProvider ResetLayout();
     public RectangleF PutNextRectangle(SizeF rectangleSize);
 }

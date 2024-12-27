@@ -5,29 +5,29 @@ namespace TagCloudGUI.Controls;
 
 public sealed class PushButtonPanel : TableLayoutPanel
 {
-    private Bitmap image;
-    
-    private readonly MyButton textUploadMyButton = new()
-    {
-        Text = "Загрузить текст",
-        Width = 230,
-    };
-
     private readonly MyButton cloudGenerationButton = new()
     {
         Text = "Сгенерировать",
-        Width = 220,
+        Width = 220
     };
 
     private readonly MyButton imageSaveButton = new()
     {
         Text = "Сохранить",
-        Width = 174,
+        Width = 174
     };
-    
-    private readonly IVisualizationProvider visualizationProvider;
+
     private readonly TagCloudConfigurationForm ParentForm;
-    
+
+    private readonly MyButton textUploadMyButton = new()
+    {
+        Text = "Загрузить текст",
+        Width = 230
+    };
+
+    private readonly IVisualizationProvider visualizationProvider;
+    private Bitmap image;
+
     public PushButtonPanel(IVisualizationProvider visualizationProvider, TagCloudConfigurationForm parentForm)
     {
         Dock = DockStyle.Fill;
@@ -38,9 +38,9 @@ public sealed class PushButtonPanel : TableLayoutPanel
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 220));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 116));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180));
-        
+
         Controls.Add(textUploadMyButton, 0, 0);
-        Controls.Add(new Panel {Dock = DockStyle.Fill}, 1, 0);
+        Controls.Add(new Panel { Dock = DockStyle.Fill }, 1, 0);
         Controls.Add(cloudGenerationButton, 2, 0);
         Controls.Add(new Panel { Dock = DockStyle.Fill }, 3, 0);
         Controls.Add(imageSaveButton, 4, 0);
@@ -52,7 +52,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
         imageSaveButton.Click += SaveImage;
         ParentForm.DataHasBeenUpdated += correct => cloudGenerationButton.Enabled = correct;
     }
-    
+
     private void SelectFile(object? sender, EventArgs e)
     {
         var openFileDialog = new OpenFileDialog
@@ -66,14 +66,15 @@ public sealed class PushButtonPanel : TableLayoutPanel
             var filePath = openFileDialog.FileName;
             ParentForm.Words = new TextPreprocessing().PerformPreprocessing(filePath);
         }
-        
+
         imageSaveButton.Enabled = false;
     }
 
     private void GenerateImage(object? sender, EventArgs e)
     {
         ParentForm.EverythingIsPrepared = true;
-        image = visualizationProvider.CreateImage(ParentForm.FilterWords, ParentForm.ColorPicker, ParentForm.LayoutProvider);
+        image = visualizationProvider.CreateImage(ParentForm.FilterWords, ParentForm.ColorPicker,
+            ParentForm.LayoutProvider);
         imageSaveButton.Enabled = true;
         ParentForm.LayoutProvider = ParentForm.LayoutProvider.ResetLayout();
     }
@@ -90,7 +91,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
             var filePath = saveFileDialog.FileName;
             image.Save(filePath);
         }
-        
+
         imageSaveButton.Enabled = false;
     }
 }

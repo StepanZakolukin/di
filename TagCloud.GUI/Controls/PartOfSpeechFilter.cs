@@ -1,5 +1,3 @@
-using TagCloud.ImageGeneration;
-
 namespace TagCloudGUI.Controls;
 
 public class PartOfSpeechFilter : MyTreeView
@@ -17,9 +15,9 @@ public class PartOfSpeechFilter : MyTreeView
         var partsOfSpeech = ParentForm.Words?
             .Select(wordInfo => wordInfo.PartOfSpeach)
             .ToHashSet();
-        
+
         TreeView.Nodes.Clear();
-        
+
         foreach (var partOfSpeech in partsOfSpeech)
             TreeView.Nodes.Add(partOfSpeech);
     }

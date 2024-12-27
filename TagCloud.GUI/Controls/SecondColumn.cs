@@ -1,12 +1,11 @@
-using TagCloud.ImageGeneration;
-
 namespace TagCloudGUI.Controls;
 
 public class SecondColumn : TableLayoutPanel
 {
-    private readonly WordFilter WordFilter;
     private readonly TagCloudConfigurationForm ParentForm;
     private readonly PartOfSpeechFilter PartOfSpeechFilter;
+    private readonly WordFilter WordFilter;
+
     public SecondColumn(TagCloudConfigurationForm parentForm)
     {
         Dock = DockStyle.Fill;
@@ -20,7 +19,7 @@ public class SecondColumn : TableLayoutPanel
         Controls.Add(WordFilter, 0, 1);
         parentForm.SetupIsFinished += FilterData;
     }
-    
+
     private void FilterData()
     {
         var excludedWords = WordFilter.GetSelectedValues().ToHashSet();

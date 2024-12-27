@@ -1,8 +1,6 @@
-using System;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
+using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
+using Point = TagCloud.CloudLayout.Point;
 
 namespace TagCloudGUI.Controls;
 
@@ -10,46 +8,48 @@ public class ImageSizeSettings : TableLayoutPanel
 {
     private static readonly Padding margin = new(0, 0, 0, 14);
 
-    public MyLabel Heading { get; set; } = new("Размеры изображения:");
+    private readonly MyLabel heightLabel = new("Высота:");
+
+    private readonly TextBox heightTextBox = new()
+    {
+        Dock = DockStyle.Fill,
+        Margin = margin
+    };
+
+    private readonly MyLabel heightUnitsOfMeasurement = new("px.");
+    private readonly IEnumerable<ILayoutProvider> layoutProviders;
+
+    private readonly IVisualizationProvider visualizationProvider;
 
     private readonly MyLabel widthLabel = new("Ширина:");
 
     private readonly TextBox widthTextBox = new()
     {
         Dock = DockStyle.Fill,
-        Margin = margin,
-    };
-
-    private readonly MyLabel heightLabel = new("Высота:");
-    
-    private readonly TextBox heightTextBox = new()
-    {
-        Dock = DockStyle.Fill,
-        Margin = margin,
+        Margin = margin
     };
 
     private readonly MyLabel widthUnitsOfMeasurement = new("px.");
 
-    private readonly MyLabel heightUnitsOfMeasurement = new("px.");
-    
-    private readonly IVisualizationProvider visualizationProvider;
-    
-    public ImageSizeSettings(IVisualizationProvider visualizationProvider)
+    public ImageSizeSettings(IVisualizationProvider visualizationProvider, IEnumerable<ILayoutProvider> layoutProviders)
     {
         Dock = DockStyle.Fill;
         widthTextBox.Text = visualizationProvider.ImageSize.Width.ToString();
         heightTextBox.Text = visualizationProvider.ImageSize.Height.ToString();
         this.visualizationProvider = visualizationProvider;
+        this.layoutProviders = layoutProviders;
         RowStyles.Add(new RowStyle(SizeType.AutoSize));
         RowStyles.Add(new RowStyle(SizeType.Percent, 66.66F));
         ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-        
+
         Controls.Add(Heading, 0, 0);
         Controls.Add(CreateNestedTable(), 0, 1);
 
         heightTextBox.TextChanged += ProcessImageSizeChange;
         widthTextBox.TextChanged += ProcessImageSizeChange;
     }
+
+    public MyLabel Heading { get; set; } = new("Размеры изображения:");
 
     private void ProcessImageSizeChange(object? sender, EventArgs args)
     {
@@ -59,6 +59,9 @@ public class ImageSizeSettings : TableLayoutPanel
             visualizationProvider.ImageSize = new Size(width, height);
             heightTextBox.BackColor = Color.White;
             widthTextBox.BackColor = Color.White;
+
+            foreach (var layoutProvider in layoutProviders)
+                layoutProvider.Center = new Point(width / 2, height / 2);
         }
         else
         {
@@ -75,11 +78,11 @@ public class ImageSizeSettings : TableLayoutPanel
         table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 115));
         table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 95));
         table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 66));
-        
+
         table.Controls.Add(widthLabel, 0, 0);
         table.Controls.Add(widthTextBox, 1, 0);
         table.Controls.Add(widthUnitsOfMeasurement, 2, 0);
-        
+
         table.Controls.Add(heightLabel, 0, 1);
         table.Controls.Add(heightTextBox, 1, 1);
         table.Controls.Add(heightUnitsOfMeasurement, 2, 1);

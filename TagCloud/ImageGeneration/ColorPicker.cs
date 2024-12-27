@@ -22,9 +22,9 @@ public class ColorPicker : IColorPicker
     {
         /*if (word.NumberInText > totalNumberWords)
             throw new ArgumentException($"{nameof(word.NumberInText)} в тексте превышает {nameof(totalNumberWords)}");
-        
+
         return Color.FromArgb((int)(255 * (double)word.NumberInText / totalNumberWords), color);*/
-        
+
         return Color.Red;
     }
 }

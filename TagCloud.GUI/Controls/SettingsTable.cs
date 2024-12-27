@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Windows.Forms;
 using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
 
@@ -15,9 +13,9 @@ public class SettingsTable : TableLayoutPanel
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 348));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 49));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 523));
-        
+
         Controls.Add(new FirstColumn(visualizationProvider, colorPickers, layoutProviders, parentForm), 0, 0);
-        Controls.Add(new Panel {Dock = DockStyle.Fill}, 1, 0);
+        Controls.Add(new Panel { Dock = DockStyle.Fill }, 1, 0);
         Controls.Add(new SecondColumn(parentForm), 2, 0);
     }
 }

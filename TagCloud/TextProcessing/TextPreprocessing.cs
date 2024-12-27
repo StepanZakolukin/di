@@ -9,19 +9,19 @@ public class TextPreprocessing : IWordsProvider
         { "A", "прилагательное" },
         { "ADV", "наречие" },
         { "ADVPRO", "местоименное наречие" },
-        {"ANUM", "числительное-прилагательное" },
-        {"APRO", "местоимение-прилагательное" },
+        { "ANUM", "числительное-прилагательное" },
+        { "APRO", "местоимение-прилагательное" },
         { "COM", "часть композита - сложного слова" },
         { "CONJ", "союз" },
         { "INTJ", "междометие" },
-        {"NUM", "числительное" },
+        { "NUM", "числительное" },
         { "PART", "частица" },
-        {"PR", "предлог" },
+        { "PR", "предлог" },
         { "S", "существительное" },
         { "SPRO", "местоимение-существительное" },
         { "V", "глагол" }
     };
-    
+
     public IEnumerable<WordInfo> PerformPreprocessing(string pathToSourceTxtFile)
     {
         var textInfo = ParseText(pathToSourceTxtFile);
@@ -36,29 +36,29 @@ public class TextPreprocessing : IWordsProvider
                 countingDictionary[wordAndPartOfSpeech]++;
         }
 
-        return countingDictionary.Select(pair => 
-            new WordInfo(pair.Key.Item1, 
-                decryptionGrammems[pair.Key.Item2], 
+        return countingDictionary.Select(pair =>
+            new WordInfo(pair.Key.Item1,
+                decryptionGrammems[pair.Key.Item2],
                 pair.Value));
     }
-    
+
     private string[] ParseText(string pathToSourceTxtFile)
     {
         var outputFile = "out.txt";
         File.Create(outputFile).Close();
-        
+
         var startInfo = new ProcessStartInfo
         {
             UseShellExecute = false,
             RedirectStandardInput = false,
             RedirectStandardOutput = false,
             FileName = "TextProcessing/Mystem.exe",
-            Arguments = $"-ling {pathToSourceTxtFile} {outputFile}",
+            Arguments = $"-ling {pathToSourceTxtFile} {outputFile}"
         };
-        
+
         var process = new Process { StartInfo = startInfo };
         process.Start();
-        
+
         process.WaitForExit();
 
         return File.ReadAllLines(outputFile);

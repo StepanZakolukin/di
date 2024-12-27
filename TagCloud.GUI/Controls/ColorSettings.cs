@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 using TagCloud.ImageGeneration;
 
 namespace TagCloudGUI.Controls;
@@ -9,9 +5,10 @@ namespace TagCloudGUI.Controls;
 public class ColorSettings : DropdownList
 {
     private readonly Dictionary<string, IColorPicker> coloringAlgorithms = new();
+
     public ColorSettings(IEnumerable<IColorPicker> coloringAlgorithms,
         TagCloudConfigurationForm parentForm) : base("Алгоритм расцветки слов:",
-            coloringAlgorithms.Select(colorPicker => colorPicker.Name), parentForm)
+        coloringAlgorithms.Select(colorPicker => colorPicker.Name), parentForm)
     {
         foreach (var colorPicker in coloringAlgorithms)
             this.coloringAlgorithms[colorPicker.Name] = colorPicker;

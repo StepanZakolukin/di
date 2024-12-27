@@ -1,11 +1,7 @@
 namespace TagCloud.TextProcessing;
 
-public record WordInfo 
+public record WordInfo
 {
-    public string Word { get; }
-    public string PartOfSpeach { get; init; }
-    public int NumberInText { get; }
-    
     private readonly HashSet<string> partsOfSpeech =
     [
         "прилагательное",
@@ -23,7 +19,7 @@ public record WordInfo
         "местоимение-существительное",
         "глагол"
     ];
-    
+
     public WordInfo(string word, string partOfSpeach, int numberInText)
     {
         Word = word;
@@ -32,4 +28,8 @@ public record WordInfo
         PartOfSpeach = partOfSpeach;
         NumberInText = numberInText;
     }
+
+    public string Word { get; }
+    public string PartOfSpeach { get; init; }
+    public int NumberInText { get; }
 }
