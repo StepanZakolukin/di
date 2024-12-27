@@ -27,9 +27,9 @@ public class TextPreprocessing : IWordsProvider
         var textInfo = ParseText(pathToSourceTxtFile);
         var countingDictionary = new Dictionary<Tuple<string, string>, int>();
 
-        for (var i = 0; i < textInfo.Length - 1; i++)
+        foreach (var line in textInfo)
         {
-            var info = textInfo[i].Split('=');
+            var info = line.Split('=');
             if (info.Length < 2 || info[0].Contains('?')) continue;
             var wordAndPartOfSpeech = Tuple.Create(info[0], info[1].Split(',')[0]);
             if (!countingDictionary.TryAdd(wordAndPartOfSpeech, 1))
