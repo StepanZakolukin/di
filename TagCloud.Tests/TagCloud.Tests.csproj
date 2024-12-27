@@ -23,10 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TagCloud.Console\TagCloud.Console.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <Folder Include="TestErrorReports\"/>
     </ItemGroup>
 
