@@ -26,4 +26,8 @@
         <Folder Include="TestErrorReports\"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TagCloud\TagCloud.csproj" />
+    </ItemGroup>
+
 </Project>
