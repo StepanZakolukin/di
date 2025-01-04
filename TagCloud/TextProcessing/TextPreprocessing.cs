@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text;
 
 namespace TagCloud.TextProcessing;
 
@@ -42,26 +43,30 @@ public class TextPreprocessing : IWordsProvider
                 pair.Value));
     }
 
-    private string[] ParseText(string pathToSourceTxtFile)
+    private IEnumerable<string> ParseText(string pathToSourceTxtFile)
     {
         var outputFile = "out.txt";
         File.Create(outputFile).Close();
 
         var startInfo = new ProcessStartInfo
         {
+            CreateNoWindow = true,
             UseShellExecute = false,
             RedirectStandardInput = false,
-            RedirectStandardOutput = false,
+            RedirectStandardOutput = true,
             FileName = "TextProcessing/Mystem.exe",
-            Arguments = $"-ling {pathToSourceTxtFile} {outputFile}",
-            CreateNoWindow = true
+            Arguments = $"-ling {pathToSourceTxtFile}",
         };
 
         var process = new Process { StartInfo = startInfo };
         process.Start();
-
+        
+        using (var reader = new StreamReader(process.StandardOutput.BaseStream, Encoding.UTF8))
+        {
+            while (reader.ReadLine() is { } line)
+                yield return line;
+        }
+        
         process.WaitForExit();
-
-        return File.ReadAllLines(outputFile);
     }
 }
