@@ -45,9 +45,6 @@ public class TextPreprocessing : IWordsProvider
 
     private IEnumerable<string> ParseText(string pathToSourceTxtFile)
     {
-        var outputFile = "out.txt";
-        File.Create(outputFile).Close();
-
         var startInfo = new ProcessStartInfo
         {
             CreateNoWindow = true,
