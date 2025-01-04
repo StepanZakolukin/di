@@ -14,7 +14,7 @@ public class FontSettings : DropdownList
         : base("Шрифт:", FontFamilies, parentForm)
     {
         Dock = DockStyle.Fill;
-        DropDownList.SelectedItem = visualizationProvider.FontFamily.Name;
+        DropDownList.SelectedItem = visualizationProvider.SettingsProvider.Settings.FontFamily.Name;
         this.visualizationProvider = visualizationProvider;
         DropDownList.SelectedIndexChanged += FontIsSelected;
     }
@@ -22,6 +22,6 @@ public class FontSettings : DropdownList
     private void FontIsSelected(object? sender, EventArgs args)
     {
         var dropdownList = sender as ComboBox;
-        visualizationProvider.FontFamily = new FontFamily(dropdownList.SelectedItem.ToString());
+        visualizationProvider.SettingsProvider.Settings.FontFamily = new FontFamily(dropdownList.SelectedItem.ToString());
     }
 }

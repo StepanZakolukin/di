@@ -34,8 +34,8 @@ public class ImageSizeSettings : TableLayoutPanel
     public ImageSizeSettings(IVisualizationProvider visualizationProvider, IEnumerable<ILayoutProvider> layoutProviders)
     {
         Dock = DockStyle.Fill;
-        widthTextBox.Text = visualizationProvider.ImageSize.Width.ToString();
-        heightTextBox.Text = visualizationProvider.ImageSize.Height.ToString();
+        widthTextBox.Text = visualizationProvider.SettingsProvider.Settings.ImageSize.Width.ToString();
+        heightTextBox.Text = visualizationProvider.SettingsProvider.Settings.ImageSize.Height.ToString();
         this.visualizationProvider = visualizationProvider;
         this.layoutProviders = layoutProviders;
         RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -56,7 +56,7 @@ public class ImageSizeSettings : TableLayoutPanel
         if (int.TryParse(heightTextBox.Text, out var height) && height > 0 &&
             int.TryParse(widthTextBox.Text, out var width) && width > 0)
         {
-            visualizationProvider.ImageSize = new Size(width, height);
+            visualizationProvider.SettingsProvider.Settings.ImageSize = new Size(width, height);
             heightTextBox.BackColor = Color.White;
             widthTextBox.BackColor = Color.White;
 

@@ -21,7 +21,7 @@ public class ConfiguringCloudCompressionRatio : TableLayoutPanel
     {
         Dock = DockStyle.Fill;
         this.visualizationProvider = visualizationProvider;
-        coefficient.Text = $"{Math.Round(visualizationProvider.CloudCompressionRatio, 2)}";
+        coefficient.Text = $"{Math.Round(visualizationProvider.SettingsProvider.Settings.CloudCompressionRatio, 2)}";
         coefficient.TextChanged += CoefficientHasChanged;
 
         RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -36,7 +36,7 @@ public class ConfiguringCloudCompressionRatio : TableLayoutPanel
         if (float.TryParse(coefficient.Text, out var number) && number > 0.501 && number < 2.001)
         {
             coefficient.BackColor = Color.White;
-            visualizationProvider.CloudCompressionRatio = number;
+            visualizationProvider.SettingsProvider.Settings.CloudCompressionRatio = number;
         }
         else
         {
