@@ -10,7 +10,7 @@ public class ConfiguringCloudCompressionRatio : TableLayoutPanel
         TextAlign = HorizontalAlignment.Center
     };
 
-    private readonly MyLabel heading = new("Коэф. сжатия облака:")
+    private readonly TagCloudLabel heading = new("Коэф. сжатия облака:")
     {
         TextAlign = ContentAlignment.MiddleLeft
     };

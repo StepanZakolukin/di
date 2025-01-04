@@ -2,14 +2,14 @@ namespace TagCloudGUI.Controls;
 
 public class DropdownList : TableLayoutPanel
 {
-    private readonly MyLabel heading;
+    private readonly TagCloudLabel heading;
     protected readonly TagCloudConfigurationForm ParentForm;
 
     public DropdownList(string heading, IEnumerable<string> list, TagCloudConfigurationForm parentForm)
     {
         Dock = DockStyle.Fill;
         ParentForm = parentForm;
-        this.heading = new MyLabel(heading);
+        this.heading = new TagCloudLabel(heading);
 
         DropDownList.Items.AddRange(list.ToArray());
 

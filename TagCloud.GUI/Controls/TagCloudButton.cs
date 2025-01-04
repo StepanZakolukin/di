@@ -1,8 +1,8 @@
 namespace TagCloudGUI.Controls;
 
-public class MyButton : Button
+public sealed class TagCloudButton : Button
 {
-    public MyButton()
+    public TagCloudButton()
     {
         FlatStyle = FlatStyle.Flat;
         Padding = new Padding(0);

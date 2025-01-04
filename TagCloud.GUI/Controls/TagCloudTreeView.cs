@@ -1,8 +1,8 @@
 namespace TagCloudGUI.Controls;
 
-public class MyTreeView : TableLayoutPanel
+public class TagCloudTreeView : TableLayoutPanel
 {
-    private readonly MyLabel heading;
+    private readonly TagCloudLabel heading;
 
     protected readonly TreeView TreeView = new()
     {
@@ -14,11 +14,11 @@ public class MyTreeView : TableLayoutPanel
 
     protected TagCloudConfigurationForm ParentForm;
 
-    public MyTreeView(string heading, TagCloudConfigurationForm parentForm)
+    public TagCloudTreeView(string heading, TagCloudConfigurationForm parentForm)
     {
         ParentForm = parentForm;
         Dock = DockStyle.Fill;
-        this.heading = new MyLabel(heading);
+        this.heading = new TagCloudLabel(heading);
         ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         RowStyles.Add(new RowStyle(SizeType.Absolute, 54));
         RowStyles.Add(new RowStyle(SizeType.Absolute, 270));

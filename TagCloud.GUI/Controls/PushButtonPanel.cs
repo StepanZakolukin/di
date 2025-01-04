@@ -5,7 +5,7 @@ namespace TagCloudGUI.Controls;
 
 public sealed class PushButtonPanel : TableLayoutPanel
 {
-    private readonly MyButton cloudGenerationButton = new()
+    private readonly TagCloudButton cloudGenerationButton = new()
     {
         Text = "Сгенерировать",
         Width = 220
@@ -13,7 +13,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
 
     private readonly TagCloudConfigurationForm ParentForm;
 
-    private readonly MyButton textUploadMyButton = new()
+    private readonly TagCloudButton textUploadTagCloudButton = new()
     {
         Text = "Загрузить текст",
         Width = 230
@@ -30,12 +30,12 @@ public sealed class PushButtonPanel : TableLayoutPanel
         ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 220));
 
-        Controls.Add(textUploadMyButton, 0, 0);
+        Controls.Add(textUploadTagCloudButton, 0, 0);
         Controls.Add(new Panel { Dock = DockStyle.Fill }, 1, 0);
         Controls.Add(cloudGenerationButton, 2, 0);
         
         cloudGenerationButton.Enabled = false;
-        textUploadMyButton.Click += SelectFile;
+        textUploadTagCloudButton.Click += SelectFile;
         cloudGenerationButton.Click += GenerateImage;
         ParentForm.DataHasBeenUpdated += correct => cloudGenerationButton.Enabled = correct;
     }

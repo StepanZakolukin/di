@@ -1,6 +1,6 @@
 namespace TagCloudGUI.Controls;
 
-public class WordFilter : MyTreeView
+public class WordFilter : TagCloudTreeView
 {
     public WordFilter(TagCloudConfigurationForm parentForm)
         : base("Исключить слова:", parentForm)

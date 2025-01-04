@@ -8,7 +8,7 @@ public class ImageSizeSettings : TableLayoutPanel
 {
     private static readonly Padding margin = new(0, 0, 0, 14);
 
-    private readonly MyLabel heightLabel = new("Высота:");
+    private readonly TagCloudLabel heightLabel = new("Высота:");
 
     private readonly TextBox heightTextBox = new()
     {
@@ -16,12 +16,12 @@ public class ImageSizeSettings : TableLayoutPanel
         Margin = margin
     };
 
-    private readonly MyLabel heightUnitsOfMeasurement = new("px.");
+    private readonly TagCloudLabel heightUnitsOfMeasurement = new("px.");
     private readonly IEnumerable<ILayoutProvider> layoutProviders;
 
     private readonly IVisualizationProvider visualizationProvider;
 
-    private readonly MyLabel widthLabel = new("Ширина:");
+    private readonly TagCloudLabel widthLabel = new("Ширина:");
 
     private readonly TextBox widthTextBox = new()
     {
@@ -29,7 +29,7 @@ public class ImageSizeSettings : TableLayoutPanel
         Margin = margin
     };
 
-    private readonly MyLabel widthUnitsOfMeasurement = new("px.");
+    private readonly TagCloudLabel widthUnitsOfMeasurement = new("px.");
 
     public ImageSizeSettings(IVisualizationProvider visualizationProvider, IEnumerable<ILayoutProvider> layoutProviders)
     {
@@ -49,7 +49,7 @@ public class ImageSizeSettings : TableLayoutPanel
         widthTextBox.TextChanged += ProcessImageSizeChange;
     }
 
-    public MyLabel Heading { get; set; } = new("Размеры изображения:");
+    public TagCloudLabel Heading { get; set; } = new("Размеры изображения:");
 
     private void ProcessImageSizeChange(object? sender, EventArgs args)
     {

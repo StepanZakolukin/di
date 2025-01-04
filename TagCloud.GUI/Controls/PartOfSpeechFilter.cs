@@ -1,6 +1,6 @@
 namespace TagCloudGUI.Controls;
 
-public class PartOfSpeechFilter : MyTreeView
+public class PartOfSpeechFilter : TagCloudTreeView
 {
     public PartOfSpeechFilter(TagCloudConfigurationForm parentForm)
         : base("Исключить части речи:", parentForm)

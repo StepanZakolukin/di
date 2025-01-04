@@ -1,8 +1,8 @@
 namespace TagCloudGUI.Controls;
 
-public class MyLabel : Label
+public sealed class TagCloudLabel : Label
 {
-    public MyLabel(string text)
+    public TagCloudLabel(string text)
     {
         Text = text;
         Dock = DockStyle.Fill;
