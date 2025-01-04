@@ -26,7 +26,7 @@ public class VisualizationCloudLayout : IVisualizationProvider
         set
         {
             if (value < 0.501 || value > 2.001)
-                throw new ArgumentException("Должно быть больше 0, но меньше или равно единице", nameof(value));
+                throw new ArgumentException("Должно быть больше 0.5, но меньше или равно 2", nameof(value));
 
             cloudCompressionRatio = value;
         }
