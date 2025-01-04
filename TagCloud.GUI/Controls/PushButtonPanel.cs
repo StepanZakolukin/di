@@ -11,12 +11,6 @@ public sealed class PushButtonPanel : TableLayoutPanel
         Width = 220
     };
 
-    private readonly MyButton imageSaveButton = new()
-    {
-        Text = "Сохранить",
-        Width = 174
-    };
-
     private readonly TagCloudConfigurationForm ParentForm;
 
     private readonly MyButton textUploadMyButton = new()
@@ -26,7 +20,6 @@ public sealed class PushButtonPanel : TableLayoutPanel
     };
 
     private readonly IVisualizationProvider visualizationProvider;
-    private Bitmap image;
 
     public PushButtonPanel(IVisualizationProvider visualizationProvider, TagCloudConfigurationForm parentForm)
     {
@@ -34,22 +27,16 @@ public sealed class PushButtonPanel : TableLayoutPanel
         ParentForm = parentForm;
         this.visualizationProvider = visualizationProvider;
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 230));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 174));
+        ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 220));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 116));
-        ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180));
 
         Controls.Add(textUploadMyButton, 0, 0);
         Controls.Add(new Panel { Dock = DockStyle.Fill }, 1, 0);
         Controls.Add(cloudGenerationButton, 2, 0);
-        Controls.Add(new Panel { Dock = DockStyle.Fill }, 3, 0);
-        Controls.Add(imageSaveButton, 4, 0);
-
-        imageSaveButton.Enabled = false;
+        
         cloudGenerationButton.Enabled = false;
         textUploadMyButton.Click += SelectFile;
         cloudGenerationButton.Click += GenerateImage;
-        imageSaveButton.Click += SaveImage;
         ParentForm.DataHasBeenUpdated += correct => cloudGenerationButton.Enabled = correct;
     }
 
@@ -66,20 +53,22 @@ public sealed class PushButtonPanel : TableLayoutPanel
             var filePath = openFileDialog.FileName;
             ParentForm.Words = new TextPreprocessing().PerformPreprocessing(filePath);
         }
-
-        imageSaveButton.Enabled = false;
     }
 
     private void GenerateImage(object? sender, EventArgs e)
     {
+        var filePath = GetPathToSave();
+        if (filePath == null) return;
+        
         ParentForm.EverythingIsPrepared = true;
-        image = visualizationProvider.CreateImage(ParentForm.FilterWords, ParentForm.ColorPicker,
+        var image = visualizationProvider.CreateImage(ParentForm.FilterWords, ParentForm.ColorPicker,
             ParentForm.LayoutProvider);
-        imageSaveButton.Enabled = true;
         ParentForm.LayoutProvider = ParentForm.LayoutProvider.ResetLayout();
+        
+        image.Save(filePath);
     }
 
-    private void SaveImage(object? sender, EventArgs e)
+    private string? GetPathToSave()
     {
         var saveFileDialog = new SaveFileDialog();
         saveFileDialog.Filter = "Изображение (*.png)|*.png";
@@ -87,11 +76,8 @@ public sealed class PushButtonPanel : TableLayoutPanel
         saveFileDialog.Title = "Сохранение файла";
 
         if (saveFileDialog.ShowDialog() == DialogResult.OK)
-        {
-            var filePath = saveFileDialog.FileName;
-            image.Save(filePath);
-        }
+            return saveFileDialog.FileName;
 
-        imageSaveButton.Enabled = false;
+        return null;
     }
 }
