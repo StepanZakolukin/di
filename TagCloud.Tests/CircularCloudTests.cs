@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using FluentAssertions;
 using TagCloud.CloudLayout;
-using Point = TagCloud.CloudLayout.Point;
 
 namespace TagCloud.Tests;
 

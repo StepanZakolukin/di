@@ -6,13 +6,13 @@ namespace TagCloud.ImageGeneration;
 
 public class VisualizationCloudLayout : IVisualizationProvider
 {
+    private float coefficient;
+
+    public ISettingsProvider<VisualizationSettingsDto> SettingsProvider { get; }
     public VisualizationCloudLayout(ISettingsProvider<VisualizationSettingsDto> settingsProvider)
     {
         SettingsProvider = settingsProvider;
     }
-
-    private float coefficient;
-    public ISettingsProvider<VisualizationSettingsDto> SettingsProvider { get; }
 
     private IColorPicker ColorPicker { get; set; }
     private ILayoutProvider LayoutProvider { get; set; }

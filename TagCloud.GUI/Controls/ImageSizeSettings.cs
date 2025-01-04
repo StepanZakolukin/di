@@ -1,6 +1,5 @@
 using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
-using Point = TagCloud.CloudLayout.Point;
 
 namespace TagCloudGUI.Controls;
 
