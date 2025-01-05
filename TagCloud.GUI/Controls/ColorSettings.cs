@@ -12,10 +12,12 @@ public class ColorSettings : DropdownList
     {
         foreach (var colorPicker in coloringAlgorithms)
             this.coloringAlgorithms[colorPicker.Name] = colorPicker;
+        
+        DropDownList.SelectedItem = parentForm.ColorPicker?.Name;
         DropDownList.SelectedIndexChanged += ColoringAlgorithmsIsSelected;
     }
 
-    private void ColoringAlgorithmsIsSelected(object sender, EventArgs e)
+    private void ColoringAlgorithmsIsSelected(object? sender, EventArgs e)
     {
         var dropdownList = sender as ComboBox;
         ParentForm.ColorPicker = coloringAlgorithms[dropdownList.SelectedItem.ToString()];

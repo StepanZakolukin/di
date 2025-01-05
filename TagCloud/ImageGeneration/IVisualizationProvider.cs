@@ -7,5 +7,6 @@ namespace TagCloud.ImageGeneration;
 public interface IVisualizationProvider
 {
     public ISettingsProvider<VisualizationSettingsDto> SettingsProvider { get; }
-    public Bitmap CreateImage(IEnumerable<WordInfo> words, IColorPicker colorPicker, ILayoutProvider layoutProvider);
+    public IUserInputProvider UserInputProvider { get; }
+    public Bitmap CreateImage();
 }

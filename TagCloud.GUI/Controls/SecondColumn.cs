@@ -1,30 +1,30 @@
 namespace TagCloudGUI.Controls;
 
-public class SecondColumn : TableLayoutPanel
+public sealed class SecondColumn : TableLayoutPanel
 {
-    private readonly TagCloudConfigurationForm ParentForm;
-    private readonly PartOfSpeechFilter PartOfSpeechFilter;
-    private readonly WordFilter WordFilter;
+    private readonly TagCloudConfigurationForm parentForm;
+    private readonly PartOfSpeechFilter partOfSpeechFilter;
+    private readonly WordFilter wordFilter;
 
     public SecondColumn(TagCloudConfigurationForm parentForm)
     {
         Dock = DockStyle.Fill;
-        ParentForm = parentForm;
-        WordFilter = new WordFilter(parentForm);
-        PartOfSpeechFilter = new PartOfSpeechFilter(parentForm);
+        this.parentForm = parentForm;
+        wordFilter = new WordFilter(parentForm);
+        partOfSpeechFilter = new PartOfSpeechFilter(parentForm);
         ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         for (var i = 0; i < 2; i++)
             RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-        Controls.Add(PartOfSpeechFilter, 0, 0);
-        Controls.Add(WordFilter, 0, 1);
+        Controls.Add(partOfSpeechFilter, 0, 0);
+        Controls.Add(wordFilter, 0, 1);
         parentForm.SetupIsFinished += FilterData;
     }
 
     private void FilterData()
     {
-        var excludedWords = WordFilter.GetSelectedValues().ToHashSet();
-        var excludedPartsOfSpeech = PartOfSpeechFilter.GetSelectedValues().ToHashSet();
-        ParentForm.FilterWords = ParentForm.Words
+        var excludedWords = wordFilter.GetSelectedValues().ToHashSet();
+        var excludedPartsOfSpeech = partOfSpeechFilter.GetSelectedValues().ToHashSet();
+        parentForm.FilterWords = parentForm.Words
             .Where(word => !excludedPartsOfSpeech.Contains(word.PartOfSpeach) && !excludedWords.Contains(word.Word));
     }
 }

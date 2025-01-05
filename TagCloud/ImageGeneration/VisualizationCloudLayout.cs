@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using TagCloud.CloudLayout;
-using TagCloud.TextProcessing;
 
 namespace TagCloud.ImageGeneration;
 
@@ -9,21 +7,17 @@ public class VisualizationCloudLayout : IVisualizationProvider
     private float coefficient;
 
     public ISettingsProvider<VisualizationSettingsDto> SettingsProvider { get; }
-    public VisualizationCloudLayout(ISettingsProvider<VisualizationSettingsDto> settingsProvider)
+    public VisualizationCloudLayout(ISettingsProvider<VisualizationSettingsDto> settingsProvider, IUserInputProvider userInputProvider)
     {
         SettingsProvider = settingsProvider;
+        UserInputProvider = userInputProvider;
     }
 
-    private IColorPicker ColorPicker { get; set; }
-    private ILayoutProvider LayoutProvider { get; set; }
-    private IEnumerable<WordInfo> WordsInfo { get; set; }
+    public IUserInputProvider UserInputProvider { get; init; }
 
-    public Bitmap CreateImage(IEnumerable<WordInfo> words, IColorPicker colorPicker, ILayoutProvider layoutProvider)
+    public Bitmap CreateImage()
     {
-        WordsInfo = words;
-        ColorPicker = colorPicker;
-        LayoutProvider = layoutProvider;
-        coefficient = SettingsProvider.Settings.ImageSize.Width * SettingsProvider.Settings.CloudCompressionRatio / WordsInfo.Count();
+        coefficient = SettingsProvider.Settings.ImageSize.Width * SettingsProvider.Settings.CloudCompressionRatio / UserInputProvider.Words.Count();
         var image = new Bitmap(SettingsProvider.Settings.ImageSize.Width, SettingsProvider.Settings.ImageSize.Height);
         DrawСloudOfWords(Graphics.FromImage(image));
 
@@ -32,13 +26,13 @@ public class VisualizationCloudLayout : IVisualizationProvider
 
     private void DrawСloudOfWords(Graphics graphics)
     {
-        foreach (var word in WordsInfo)
+        foreach (var word in UserInputProvider.Words)
         {
-            var color = ColorPicker.GetColorForWord(word);
+            var color = UserInputProvider.ColorPicker.GetColorForWord(word);
             var height = word.NumberInText * coefficient;
             var font = new Font(SettingsProvider.Settings.FontFamily, height, GraphicsUnit.Pixel);
             var size = graphics.MeasureString(word.Word, font);
-            var location = LayoutProvider.PutNextRectangle(size);
+            var location = UserInputProvider.LayoutProvider.PutNextRectangle(size);
 
             graphics.DrawString(word.Word, font, new SolidBrush(color), location);
         }

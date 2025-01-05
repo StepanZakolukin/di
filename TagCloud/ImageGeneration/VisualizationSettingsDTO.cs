@@ -2,12 +2,12 @@ using System.Drawing;
 
 namespace TagCloud.ImageGeneration;
 
-public class VisualizationSettingsDto
+public class VisualizationSettingsDto(Size imageSize, FontFamily fontFamily, float cloudCompressionRatio)
 {
-    public Size ImageSize { get; set; } = new(1080, 1080);
-    public FontFamily FontFamily { get; set; } = new("Arial");
+    public Size ImageSize { get; set; } = imageSize;
+    public FontFamily FontFamily { get; set; } = fontFamily;
     
-    private float cloudCompressionRatio = 0.8f;
+    private float cloudCompressionRatio = cloudCompressionRatio;
     public float CloudCompressionRatio
     {
         get => cloudCompressionRatio;

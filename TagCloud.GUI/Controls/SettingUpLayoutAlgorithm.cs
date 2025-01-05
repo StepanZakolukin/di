@@ -11,7 +11,7 @@ public class SettingUpLayoutAlgorithm : DropdownList
     {
         foreach (var provider in layoutProviders)
             this.layoutProviders[provider.Name] = provider;
-
+        DropDownList.SelectedItem = parentForm.LayoutProvider?.Name;
         DropDownList.SelectedIndexChanged += LayoutProviderIsSelected;
     }
 

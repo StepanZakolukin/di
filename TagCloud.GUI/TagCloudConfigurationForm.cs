@@ -7,19 +7,19 @@ namespace TagCloudGUI;
 
 public partial class TagCloudConfigurationForm : Form
 {
-    private IColorPicker? colorPicker;
-
     private bool everythingIsPrepared;
     public IEnumerable<WordInfo>? FilterWords;
-
-    private ILayoutProvider? layoutProvider;
-    private IEnumerable<WordInfo>? words;
+    private readonly IVisualizationProvider visualizationProvider;
+    public IWordsProvider WordsProvider { get; init; }
 
     public TagCloudConfigurationForm(IVisualizationProvider visualizationProvider,
         IEnumerable<IColorPicker> colorPickers,
-        IEnumerable<ILayoutProvider> layoutProviders)
+        IEnumerable<ILayoutProvider> layoutProviders,
+        IWordsProvider wordsProvider)
     {
         InitializeComponent();
+        WordsProvider = wordsProvider;
+        this.visualizationProvider = visualizationProvider;
         Font = new Font("Arial", 22, FontStyle.Regular, GraphicsUnit.Pixel);
         var table = new TableLayoutPanel { Dock = DockStyle.Fill };
         table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
@@ -38,10 +38,10 @@ public partial class TagCloudConfigurationForm : Form
 
     public IEnumerable<WordInfo>? Words
     {
-        get => words;
+        get => visualizationProvider.UserInputProvider.Words;
         set
         {
-            words = value;
+            visualizationProvider.UserInputProvider.Words = value;
             TextIsUploaded?.Invoke();
             DataHasBeenUpdated?.Invoke(CheckCorrectnessOfData());
         }
@@ -49,20 +49,20 @@ public partial class TagCloudConfigurationForm : Form
 
     public IColorPicker? ColorPicker
     {
-        get => colorPicker;
+        get => visualizationProvider.UserInputProvider.ColorPicker;
         set
         {
-            colorPicker = value;
+            visualizationProvider.UserInputProvider.ColorPicker = value;
             DataHasBeenUpdated?.Invoke(CheckCorrectnessOfData());
         }
     }
 
     public ILayoutProvider? LayoutProvider
     {
-        get => layoutProvider;
+        get => visualizationProvider.UserInputProvider.LayoutProvider;
         set
         {
-            layoutProvider = value;
+            visualizationProvider.UserInputProvider.LayoutProvider = value;
             DataHasBeenUpdated?.Invoke(CheckCorrectnessOfData());
         }
     }

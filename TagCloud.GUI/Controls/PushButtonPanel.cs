@@ -1,5 +1,4 @@
 using TagCloud.ImageGeneration;
-using TagCloud.TextProcessing;
 
 namespace TagCloudGUI.Controls;
 
@@ -11,7 +10,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
         Width = 220
     };
 
-    private readonly TagCloudConfigurationForm ParentForm;
+    private readonly TagCloudConfigurationForm parentForm;
 
     private readonly TagCloudButton textUploadTagCloudButton = new()
     {
@@ -24,7 +23,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
     public PushButtonPanel(IVisualizationProvider visualizationProvider, TagCloudConfigurationForm parentForm)
     {
         Dock = DockStyle.Fill;
-        ParentForm = parentForm;
+        this.parentForm = parentForm;
         this.visualizationProvider = visualizationProvider;
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 230));
         ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
@@ -37,7 +36,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
         cloudGenerationButton.Enabled = false;
         textUploadTagCloudButton.Click += SelectFile;
         cloudGenerationButton.Click += GenerateImage;
-        ParentForm.DataHasBeenUpdated += correct => cloudGenerationButton.Enabled = correct;
+        this.parentForm.DataHasBeenUpdated += correct => cloudGenerationButton.Enabled = correct;
     }
 
     private void SelectFile(object? sender, EventArgs e)
@@ -51,7 +50,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
             var filePath = openFileDialog.FileName;
-            ParentForm.Words = new TextPreprocessing().PerformPreprocessing(filePath);
+            parentForm.Words = parentForm.WordsProvider.PerformPreprocessing(filePath);
         }
     }
 
@@ -60,10 +59,11 @@ public sealed class PushButtonPanel : TableLayoutPanel
         var filePath = GetPathToSave();
         if (filePath == null) return;
         
-        ParentForm.EverythingIsPrepared = true;
-        var image = visualizationProvider.CreateImage(ParentForm.FilterWords, ParentForm.ColorPicker,
-            ParentForm.LayoutProvider);
-        ParentForm.LayoutProvider = ParentForm.LayoutProvider.ResetLayout();
+        parentForm.EverythingIsPrepared = true;
+        visualizationProvider.UserInputProvider.Words = parentForm.FilterWords;
+        
+        var image = visualizationProvider.CreateImage();
+        parentForm.LayoutProvider = parentForm.LayoutProvider?.ResetLayout();
         
         image.Save(filePath);
     }
