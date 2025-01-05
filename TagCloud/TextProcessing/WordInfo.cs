@@ -2,7 +2,7 @@ namespace TagCloud.TextProcessing;
 
 public record WordInfo
 {
-    private readonly HashSet<string> partsOfSpeech =
+    private readonly HashSet<string> partsOfSpeach =
     [
         "прилагательное",
         "наречие",
@@ -17,13 +17,14 @@ public record WordInfo
         "предлог",
         "существительное",
         "местоимение-существительное",
-        "глагол"
+        "глагол",
+        "нет данных"
     ];
 
     public WordInfo(string word, string partOfSpeach, int numberInText)
     {
         Word = word;
-        if (!partsOfSpeech.Contains(partOfSpeach))
+        if (!partsOfSpeach.Contains(partOfSpeach))
             throw new ArgumentException("Некорректная чаcть речи", nameof(partOfSpeach));
         PartOfSpeach = partOfSpeach;
         NumberInText = numberInText;

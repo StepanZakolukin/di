@@ -27,11 +27,14 @@ public partial class TagCloudConfigurationForm : Form
         table.RowStyles.Add(new RowStyle(SizeType.Absolute, 20));
         table.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
 
+        var textTypeSettings = new SettingTextType(this);
         table.Controls.Add(
-            new SettingsTable(visualizationProvider, colorPickers, layoutProviders, this) { Dock = DockStyle.Fill }, 0,
-            0);
+            new SettingsTable(visualizationProvider, colorPickers, layoutProviders, this, textTypeSettings)
+            {
+                Dock = DockStyle.Fill
+            }, 0, 0);
         table.Controls.Add(new Panel { Dock = DockStyle.Fill }, 0, 1);
-        table.Controls.Add(new PushButtonPanel(visualizationProvider, this), 0, 2);
+        table.Controls.Add(new PushButtonPanel(visualizationProvider, this, textTypeSettings), 0, 2);
 
         Controls.Add(table);
     }

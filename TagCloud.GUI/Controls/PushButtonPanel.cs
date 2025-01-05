@@ -4,6 +4,12 @@ namespace TagCloudGUI.Controls;
 
 public sealed class PushButtonPanel : TableLayoutPanel
 {
+    private static readonly Dictionary<string, FileContentStructure> FileContentStructures = new()
+    {
+        ["Литературный текст"] = FileContentStructure.Literary,
+        ["Список слов (по одному в строке)"] = FileContentStructure.ListOfWords,
+    };
+    
     private readonly TagCloudButton cloudGenerationButton = new()
     {
         Text = "Сгенерировать",
@@ -18,12 +24,14 @@ public sealed class PushButtonPanel : TableLayoutPanel
         Width = 230
     };
 
+    private readonly SettingTextType typeContent;
     private readonly IVisualizationProvider visualizationProvider;
 
-    public PushButtonPanel(IVisualizationProvider visualizationProvider, TagCloudConfigurationForm parentForm)
+    public PushButtonPanel(IVisualizationProvider visualizationProvider, TagCloudConfigurationForm parentForm, SettingTextType typeContent)
     {
         Dock = DockStyle.Fill;
         this.parentForm = parentForm;
+        this.typeContent = typeContent;
         this.visualizationProvider = visualizationProvider;
         ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 230));
         ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
@@ -37,6 +45,14 @@ public sealed class PushButtonPanel : TableLayoutPanel
         textUploadTagCloudButton.Click += SelectFile;
         cloudGenerationButton.Click += GenerateImage;
         this.parentForm.DataHasBeenUpdated += correct => cloudGenerationButton.Enabled = correct;
+        typeContent.SelectedIndexChanged += ContentTypeHasBeenChanged;
+    }
+
+    private void ContentTypeHasBeenChanged(object? sender, EventArgs args)
+    {
+        if (sender is ComboBox comboBox)
+            textUploadTagCloudButton.Enabled = comboBox.SelectedIndex != -1;
+        else throw new ArgumentException("sender is not of type ComboBox");
     }
 
     private void SelectFile(object? sender, EventArgs e)
@@ -50,7 +66,9 @@ public sealed class PushButtonPanel : TableLayoutPanel
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
             var filePath = openFileDialog.FileName;
-            parentForm.Words = parentForm.WordsProvider.PerformPreprocessing(filePath);
+            parentForm.Words = parentForm.WordsProvider.PerformPreprocessing(
+                filePath,
+                FileContentStructures[typeContent.SelectedItem.ToString()]);
         }
     }
 

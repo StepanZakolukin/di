@@ -1,5 +1,6 @@
 using FluentAssertions;
 using TagCloud.TextProcessing;
+using TagCloudGUI.Controls;
 
 namespace TagCloud.Tests;
 
@@ -24,7 +25,7 @@ public class TextPreprocessingTests
     {
         var morozko = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "Morozko.txt");
 
-        var result = textPreprocessing.PerformPreprocessing(morozko);
+        var result = textPreprocessing.PerformPreprocessing(morozko, FileContentStructure.Literary);
 
         CheckCharactersOfWords(result, symbol => char.IsLower(symbol) || symbol == '-');
 }
@@ -34,7 +35,7 @@ public class TextPreprocessingTests
     {
         var eugeneOnegin = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "EugeneOnegin.txt");
         
-        var result = textPreprocessing.PerformPreprocessing(eugeneOnegin);
+        var result = textPreprocessing.PerformPreprocessing(eugeneOnegin, FileContentStructure.Literary);
         
         CheckCharactersOfWords(result, symbol => russianAlphabet.Contains(symbol) || symbol == '-');
     }
@@ -63,7 +64,7 @@ public class TextPreprocessingTests
         random.Shuffle(lines);
         File.WriteAllLines(pathToFile, lines);
         
-        var result = textPreprocessing.PerformPreprocessing(pathToFile);
+        var result = textPreprocessing.PerformPreprocessing(pathToFile, FileContentStructure.Literary);
         
         result.All(wordInfo => frequencyDictionary[wordInfo.Word] == wordInfo.NumberInText).Should().BeTrue();
     }

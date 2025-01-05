@@ -1,6 +1,8 @@
+using TagCloudGUI.Controls;
+
 namespace TagCloud.TextProcessing;
 
 public interface IWordsProvider
 {
-    public IEnumerable<WordInfo> PerformPreprocessing(string pathToSourceTxtFile);
+    public IEnumerable<WordInfo> PerformPreprocessing(string pathToSourceTxtFile, FileContentStructure structureOfContent);
 }

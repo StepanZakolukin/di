@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text;
+using TagCloudGUI.Controls;
 
 namespace TagCloud.TextProcessing;
 
@@ -23,7 +24,26 @@ public class TextPreprocessing : IWordsProvider
         { "V", "глагол" }
     };
 
-    public IEnumerable<WordInfo> PerformPreprocessing(string pathToSourceTxtFile)
+    private IEnumerable<WordInfo> PerformPreprocessingOfWordFile(string fileWithWords)
+    {
+        const string partOfSpeach = "нет данных";
+        var countingDictionary = new Dictionary<string, int>();
+        
+        using (var reader = new StreamReader(fileWithWords))
+        {
+            while (reader.ReadLine() is { } line)
+            {
+                var word = line.Trim();
+                if (word == string.Empty) continue;
+                if (!countingDictionary.TryAdd(word, 1))
+                    countingDictionary[word]++;
+            }
+        }
+        
+        return countingDictionary.Select(pair => new WordInfo(pair.Key, partOfSpeach, pair.Value));
+    }
+
+    private IEnumerable<WordInfo> PerformPreliminaryProcessingOfLiteraryText(string pathToSourceTxtFile)
     {
         var textInfo = ParseText(pathToSourceTxtFile);
         var countingDictionary = new Dictionary<Tuple<string, string>, int>();
@@ -41,6 +61,16 @@ public class TextPreprocessing : IWordsProvider
             new WordInfo(pair.Key.Item1,
                 decryptionGrammems[pair.Key.Item2],
                 pair.Value));
+    }
+    
+    public IEnumerable<WordInfo> PerformPreprocessing(string pathToSourceTxtFile, FileContentStructure structureOfContent)
+    {
+        if (!File.Exists(pathToSourceTxtFile))
+            throw new FileNotFoundException();
+        
+        if (structureOfContent == FileContentStructure.Literary)
+            return PerformPreliminaryProcessingOfLiteraryText(pathToSourceTxtFile);
+        return PerformPreprocessingOfWordFile(pathToSourceTxtFile);
     }
 
     private IEnumerable<string> ParseText(string pathToSourceTxtFile)
@@ -66,4 +96,5 @@ public class TextPreprocessing : IWordsProvider
         
         process.WaitForExit();
     }
+
 }
