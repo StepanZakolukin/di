@@ -30,6 +30,6 @@ public record WordInfo
     }
 
     public string Word { get; }
-    public string PartOfSpeach { get; init; }
+    public string PartOfSpeach { get; }
     public int NumberInText { get; }
 }

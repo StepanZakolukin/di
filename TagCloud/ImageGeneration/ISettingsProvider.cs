@@ -1,6 +1,6 @@
 namespace TagCloud.ImageGeneration;
 
-public interface ISettingsProvider<TSettings>
+public interface ISettingsProvider<out TSettings>
 {
-    public VisualizationSettingsDto Settings { get; }
+    public TSettings Settings { get; }
 }
