@@ -19,8 +19,9 @@ public class TextPreprocessingTests
         russianAlphabet.Add('ё');
     }
 
-    [Test]
-    public void PerformPreprocessing_Text_AllCharactersMustBeInLowercase()
+    [TestCase(FileContentStructure.Literary)]
+    [TestCase(FileContentStructure.ListOfWords)]
+    public void PerformPreprocessing_Text_AllCharactersMustBeInLowercase(FileContentStructure typeOfContent)
     {
         var morozko = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "Morozko.txt");
 
@@ -45,8 +46,9 @@ public class TextPreprocessingTests
             wordInfo.Word.All(check).Should().BeTrue();
     }
 
-    [Test]
-    public void PerformPreprocessing_Text_CorrectWordCount()
+    [TestCase(FileContentStructure.Literary)]
+    [TestCase(FileContentStructure.ListOfWords)]
+    public void PerformPreprocessing_Text_CorrectWordCount(FileContentStructure typeOfContent)
     {
         var pathToFile = "../../../Texts/CheckingCount.txt";
         var frequencyDictionary = new Dictionary<string, int>
@@ -58,12 +60,13 @@ public class TextPreprocessingTests
             { "человек", 2},
             { "отчаянно", 8},
         };
+        
         var lines = CreateArrayOfWords(frequencyDictionary);
         var random = new Random();
         random.Shuffle(lines);
         File.WriteAllLines(pathToFile, lines);
         
-        var result = textPreprocessing.PerformPreprocessing(pathToFile, FileContentStructure.Literary);
+        var result = textPreprocessing.PerformPreprocessing(pathToFile, typeOfContent);
         
         result.All(wordInfo => frequencyDictionary[wordInfo.Word] == wordInfo.NumberInText).Should().BeTrue();
     }
@@ -78,24 +81,24 @@ public class TextPreprocessingTests
         return list.ToArray();
     }
 
-    [Test]
-    public void PerformPreprocessing_UnExistingFile_ThrowsFileNotFoundException()
+    [TestCase(FileContentStructure.Literary)]
+    [TestCase(FileContentStructure.ListOfWords)]
+    public void PerformPreprocessing_UnExistingFile_ThrowsFileNotFoundException(FileContentStructure typeOfContent)
     {
         var calling = () => textPreprocessing.PerformPreprocessing(
             "UnExistingFile.txt",
-            FileContentStructure.Literary);
+            typeOfContent);
         
         calling.Should().Throw<FileNotFoundException>();
     }
 
-    [Test]
-    public void PerformPreprocessing_EmptyFile_EmptyCollectionOfWords()
+    [TestCase(FileContentStructure.Literary)]
+    [TestCase(FileContentStructure.ListOfWords)]
+    public void PerformPreprocessing_EmptyFile_EmptyCollectionOfWords(FileContentStructure typeOfContent)
     {
         var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "EmptyFile.txt");
-        var literaryStructure = textPreprocessing.PerformPreprocessing(pathToFile, FileContentStructure.Literary);
-        var listOfWords = textPreprocessing.PerformPreprocessing(pathToFile, FileContentStructure.ListOfWords);
+        var actual = textPreprocessing.PerformPreprocessing(pathToFile, FileContentStructure.Literary);
         
-        listOfWords.Should().BeEmpty();
-        literaryStructure.Should().BeEmpty();
+        actual.Should().BeEmpty();
     }
 }
