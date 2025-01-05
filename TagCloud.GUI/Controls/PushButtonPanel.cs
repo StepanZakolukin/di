@@ -63,7 +63,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
         visualizationProvider.UserInputProvider.Words = parentForm.FilterWords;
         
         var image = visualizationProvider.CreateImage();
-        parentForm.LayoutProvider = parentForm.LayoutProvider?.ResetLayout();
+        parentForm.LayoutProvider?.ResetLayout();
         
         image.Save(filePath);
     }

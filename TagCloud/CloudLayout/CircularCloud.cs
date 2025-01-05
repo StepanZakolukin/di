@@ -27,9 +27,10 @@ public class CircularCloud(Point center) : ILayoutProvider
         return rectangle;
     }
 
-    public ILayoutProvider ResetLayout()
+    public void ResetLayout()
     {
-        return new CircularCloud(Center);
+        cloudOfRectangles.Clear();
+        AngleOfRotationInRadians = 0;
     }
 
     private RectangleF ChooseLocationForRectangle(SizeF rectangleSize)

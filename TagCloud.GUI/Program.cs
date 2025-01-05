@@ -23,8 +23,7 @@ internal static class Program
             imageSize,
             new FontFamily("Arial"),
             1.4f));
-        var circularCloud = new CircularCloud(new Point(imageSize.Width / 2, imageSize.Height / 2));
-        services.AddSingleton<ILayoutProvider>(_ => circularCloud);
+        services.AddTransient<ILayoutProvider>(_ => new CircularCloud(new Point(imageSize.Width / 2, imageSize.Height / 2)));
 
         var provider = services.BuildServiceProvider();
         var form = provider.GetService<Form>();

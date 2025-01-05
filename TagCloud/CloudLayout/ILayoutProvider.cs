@@ -6,6 +6,6 @@ public interface ILayoutProvider
 {
     public string Name { get; }
     public Point Center { get; set; }
-    public ILayoutProvider ResetLayout();
+    public void ResetLayout();
     public RectangleF PutNextRectangle(SizeF rectangleSize);
 }
