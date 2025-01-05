@@ -19,7 +19,8 @@ public class ColorSettings : DropdownList
 
     private void ColoringAlgorithmsIsSelected(object? sender, EventArgs e)
     {
-        var dropdownList = sender as ComboBox;
-        ParentForm.ColorPicker = coloringAlgorithms[dropdownList.SelectedItem.ToString()];
+        if (sender is ComboBox dropdownList)
+            ParentForm.ColorPicker = coloringAlgorithms[dropdownList.SelectedItem.ToString()];
+        else throw new ArgumentException($"Не подходящий тип данных, ожидался {nameof(ComboBox)}", nameof(sender));
     }
 }

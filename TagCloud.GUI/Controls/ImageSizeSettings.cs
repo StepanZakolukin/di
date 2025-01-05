@@ -5,14 +5,14 @@ namespace TagCloudGUI.Controls;
 
 public class ImageSizeSettings : TableLayoutPanel
 {
-    private static readonly Padding margin = new(0, 0, 0, 14);
+    private static readonly Padding ItemsMargin = new(0, 0, 0, 14);
 
     private readonly TagCloudLabel heightLabel = new("Высота:");
 
     private readonly TextBox heightTextBox = new()
     {
         Dock = DockStyle.Fill,
-        Margin = margin
+        Margin = ItemsMargin
     };
 
     private readonly TagCloudLabel heightUnitsOfMeasurement = new("px.");
@@ -25,7 +25,7 @@ public class ImageSizeSettings : TableLayoutPanel
     private readonly TextBox widthTextBox = new()
     {
         Dock = DockStyle.Fill,
-        Margin = margin
+        Margin = ItemsMargin
     };
 
     private readonly TagCloudLabel widthUnitsOfMeasurement = new("px.");
@@ -48,19 +48,21 @@ public class ImageSizeSettings : TableLayoutPanel
         widthTextBox.TextChanged += ProcessImageSizeChange;
     }
 
-    public TagCloudLabel Heading { get; set; } = new("Размеры изображения:");
+    public TagCloudLabel Heading { get; } = new("Размеры изображения:");
 
     private void ProcessImageSizeChange(object? sender, EventArgs args)
     {
         if (int.TryParse(heightTextBox.Text, out var height) && height > 0 &&
             int.TryParse(widthTextBox.Text, out var width) && width > 0)
         {
+            var center = new Point(width / 2, height / 2);
+            visualizationProvider.UserInputProvider.LayoutProvider.Center = center;
             visualizationProvider.SettingsProvider.Settings.ImageSize = new Size(width, height);
             heightTextBox.BackColor = Color.White;
             widthTextBox.BackColor = Color.White;
 
             foreach (var layoutProvider in layoutProviders)
-                layoutProvider.Center = new Point(width / 2, height / 2);
+                layoutProvider.Center = center;
         }
         else
         {
