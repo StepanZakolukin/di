@@ -9,7 +9,6 @@ public class TextPreprocessingTests
 {
     private readonly TextPreprocessing textPreprocessing = new();
     
-    
     private readonly HashSet<char> russianAlphabet = [];
 
     [SetUp]
@@ -77,5 +76,26 @@ public class TextPreprocessingTests
                 list.Add(pair.Key);
         
         return list.ToArray();
+    }
+
+    [Test]
+    public void PerformPreprocessing_UnExistingFile_ThrowsFileNotFoundException()
+    {
+        var calling = () => textPreprocessing.PerformPreprocessing(
+            "UnExistingFile.txt",
+            FileContentStructure.Literary);
+        
+        calling.Should().Throw<FileNotFoundException>();
+    }
+
+    [Test]
+    public void PerformPreprocessing_EmptyFile_EmptyCollectionOfWords()
+    {
+        var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "EmptyFile.txt");
+        var literaryStructure = textPreprocessing.PerformPreprocessing(pathToFile, FileContentStructure.Literary);
+        var listOfWords = textPreprocessing.PerformPreprocessing(pathToFile, FileContentStructure.ListOfWords);
+        
+        listOfWords.Should().BeEmpty();
+        literaryStructure.Should().BeEmpty();
     }
 }
