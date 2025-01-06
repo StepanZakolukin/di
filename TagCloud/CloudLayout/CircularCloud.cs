@@ -17,7 +17,8 @@ public class CircularCloud(Point center) : ILayoutProvider
     public RectangleF PutNextRectangle(SizeF rectangleSize)
     {
         var halfOfMinSide = (int)(Math.Min(rectangleSize.Width, rectangleSize.Height) / 2);
-        DistanceBetweenTurns = Math.Min(DistanceBetweenTurns, halfOfMinSide);
+        if (halfOfMinSide > 0)
+            DistanceBetweenTurns = Math.Min(DistanceBetweenTurns, halfOfMinSide);
 
         if (cloudOfRectangles.Count == 0) InitialRadiusOfSpiral = halfOfMinSide;
 

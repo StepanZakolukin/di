@@ -18,7 +18,8 @@ public class VisualizationCloudLayout(
         UserInputProvider.LayoutProvider.ResetLayout();
         var center = new Point(SettingsProvider.Settings.ImageSize.Width / 2, SettingsProvider.Settings.ImageSize.Height / 2);
         UserInputProvider.LayoutProvider.Center = center;
-        coefficient = SettingsProvider.Settings.ImageSize.Width * SettingsProvider.Settings.CloudCompressionRatio / UserInputProvider.Words.Count();
+        var numberOUniqueWords = UserInputProvider.Words.Sum(wordInfo => wordInfo.NumberInText);
+        coefficient = SettingsProvider.Settings.ImageSize.Height * SettingsProvider.Settings.CloudCompressionRatio / numberOUniqueWords;
         var image = new Bitmap(SettingsProvider.Settings.ImageSize.Width, SettingsProvider.Settings.ImageSize.Height);
         DrawСloudOfWords(Graphics.FromImage(image));
 
