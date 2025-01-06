@@ -10,6 +10,7 @@ public class TextPreprocessingTests
 {
     private readonly TextPreprocessing textPreprocessing = new();
     private readonly IReaderProvider readerProvider = new ReaderPicker([new TxtReader()]);
+    private readonly string pathToFileFolder = Path.Combine(Directory.GetCurrentDirectory(), "TestsFiles");
     
     private readonly HashSet<char> russianAlphabet = [];
 
@@ -25,9 +26,11 @@ public class TextPreprocessingTests
     [TestCase(ContentStructure.ListOfWords)]
     public void PerformPreprocessing_Text_AllCharactersMustBeInLowercase(ContentStructure typeOfContent)
     {
-        var morozko = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "Morozko.txt");
+        var morozko = Path.Combine(pathToFileFolder, "Morozko.txt");
 
-        var result = textPreprocessing.PerformPreprocessing(readerProvider.GetReader(morozko), ContentStructure.Literary);
+        var result = textPreprocessing.PerformPreprocessing(
+            readerProvider.GetReader(morozko),
+            ContentStructure.Literary);
 
         CheckCharactersOfWords(result, symbol => char.IsLower(symbol) || symbol == '-');
 }
@@ -35,7 +38,7 @@ public class TextPreprocessingTests
     [Test]
     public void PerformPreprocessing_Text_OnlyRussianLettersShouldRemainInWords()
     {
-        var eugeneOnegin = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "EugeneOnegin.txt");
+        var eugeneOnegin = Path.Combine(pathToFileFolder, "EugeneOnegin.txt");
         
         var result = textPreprocessing.PerformPreprocessing(
             readerProvider.GetReader(eugeneOnegin),
@@ -54,7 +57,7 @@ public class TextPreprocessingTests
     [TestCase(ContentStructure.ListOfWords)]
     public void PerformPreprocessing_Text_CorrectWordCount(ContentStructure typeOfContent)
     {
-        var pathToFile = "../../../Texts/CheckingCount.txt";
+        var pathToFile = Path.Combine(pathToFileFolder, "CheckingCount.txt");
         var frequencyDictionary = new Dictionary<string, int>
         {
             { "привет", 5 },
@@ -65,7 +68,7 @@ public class TextPreprocessingTests
             { "отчаянно", 8},
         };
         
-        var lines = CreateArrayOfWords(frequencyDictionary);
+        var lines = TxtReaderTests.CreateArrayOfWords(frequencyDictionary);
         var random = new Random();
         random.Shuffle(lines);
         File.WriteAllLines(pathToFile, lines);
@@ -75,36 +78,5 @@ public class TextPreprocessingTests
             typeOfContent);
         
         result.All(wordInfo => frequencyDictionary[wordInfo.Word] == wordInfo.NumberInText).Should().BeTrue();
-    }
-
-    private string[] CreateArrayOfWords(Dictionary<string, int> frequencyDictionary)
-    {
-        var list = new List<string>();
-        foreach (var pair in frequencyDictionary)
-            for (var i = 0; i < pair.Value; i++)
-                list.Add(pair.Key);
-        
-        return list.ToArray();
-    }
-
-    [TestCase(ContentStructure.Literary)]
-    [TestCase(ContentStructure.ListOfWords)]
-    public void PerformPreprocessing_UnExistingFile_ThrowsFileNotFoundException(ContentStructure typeOfContent)
-    {
-        var calling = () => textPreprocessing.PerformPreprocessing(
-            readerProvider.GetReader("UnExistingFile.txt"),
-            typeOfContent);
-        
-        calling.Should().Throw<FileNotFoundException>();
-    }
-
-    [TestCase(ContentStructure.Literary)]
-    [TestCase(ContentStructure.ListOfWords)]
-    public void PerformPreprocessing_EmptyFile_EmptyCollectionOfWords(ContentStructure typeOfContent)
-    {
-        var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "EmptyFile.txt");
-        var actual = textPreprocessing.PerformPreprocessing(readerProvider.GetReader(pathToFile), ContentStructure.Literary);
-        
-        actual.Should().BeEmpty();
     }
 }

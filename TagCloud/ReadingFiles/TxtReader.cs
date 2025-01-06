@@ -11,9 +11,11 @@ public class TxtReader : IReader
         var fileExtension = Path.GetExtension(pathToFile);
         if (!AvailableExtensions.Contains(fileExtension))
             throw new IOException($"{nameof(TxtReader)} не поддерживает {fileExtension} формат файлов");
+        if (!Path.Exists(pathToFile))
+            throw new FileNotFoundException($"Файл {pathToFile} не существует или поврежден");
 
         using var reader = new StreamReader(pathToFile);
         while (reader.ReadLine() is { } line)
-            yield return line;
+            yield return line.Trim();
     }
 }
