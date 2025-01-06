@@ -1,5 +1,6 @@
 using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
+using TagCloud.ReadingFiles;
 using TagCloud.TextProcessing;
 using TagCloudGUI.Controls;
 
@@ -10,15 +11,19 @@ public partial class TagCloudConfigurationForm : Form
     private bool everythingIsPrepared;
     public IEnumerable<WordInfo>? FilterWords;
     private readonly IVisualizationProvider visualizationProvider;
-    public IWordsProvider WordsProvider { get; init; }
+    public IWordsProvider WordsProvider { get; }
+    public IReaderProvider ReaderProvider { get; }
 
-    public TagCloudConfigurationForm(IVisualizationProvider visualizationProvider,
+    public TagCloudConfigurationForm(
+        IWordsProvider wordsProvider,
+        IReaderProvider readerProvider,
         IEnumerable<IColorPicker> colorPickers,
-        IEnumerable<ILayoutProvider> layoutProviders,
-        IWordsProvider wordsProvider)
+        IVisualizationProvider visualizationProvider,
+        IEnumerable<ILayoutProvider> layoutProviders)
     {
         InitializeComponent();
         WordsProvider = wordsProvider;
+        ReaderProvider = readerProvider;
         this.visualizationProvider = visualizationProvider;
         Font = new Font("Arial", 22, FontStyle.Regular, GraphicsUnit.Pixel);
         var table = new TableLayoutPanel { Dock = DockStyle.Fill };

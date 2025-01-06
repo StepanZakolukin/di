@@ -1,4 +1,5 @@
 using TagCloud.ImageGeneration;
+using TagCloud.ReadingFiles;
 
 namespace TagCloudGUI.Controls;
 
@@ -57,9 +58,12 @@ public sealed class PushButtonPanel : TableLayoutPanel
 
     private void SelectFile(object? sender, EventArgs e)
     {
+        var extensions = parentForm.ReaderProvider.GetSupportedExtensions()
+            .Select(extension => $"*{extension}")
+            .ToArray();
         var openFileDialog = new OpenFileDialog
         {
-            Filter = "txt files (*.txt)|*.txt",
+            Filter = "(" + string.Join(", ", extensions) + ")|" + string.Join(";", extensions),
             RestoreDirectory = true
         };
 
@@ -67,7 +71,7 @@ public sealed class PushButtonPanel : TableLayoutPanel
         {
             var filePath = openFileDialog.FileName;
             parentForm.Words = parentForm.WordsProvider.PerformPreprocessing(
-                filePath,
+                parentForm.ReaderProvider.GetReader(filePath),
                 FileContentStructures[typeContent.SelectedItem.ToString()]);
         }
     }

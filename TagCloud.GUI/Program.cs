@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using TagCloud.CloudLayout;
 using TagCloud.ImageGeneration;
+using TagCloud.ReadingFiles;
 using TagCloud.TextProcessing;
 
 namespace TagCloudGUI;
@@ -12,6 +13,8 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
         var services = new ServiceCollection();
+        services.AddSingleton<IReader, TxtReader>();
+        services.AddSingleton<IReaderProvider, ReaderPicker>();
         services.AddSingleton<IColorPicker, ColorPicker>();
         services.AddSingleton<Form, TagCloudConfigurationForm>();
         services.AddSingleton<IWordsProvider, TextPreprocessing>();
