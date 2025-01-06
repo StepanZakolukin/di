@@ -10,7 +10,7 @@ public class TxtReaderTests
     private readonly string pathToFileFolder = Path.Combine(Directory.GetCurrentDirectory(), "TestsFiles");
     
     [Test]
-    public void ReadTextLineByLine_UnExistingFile_ThrowsFileNotFoundException()
+    public void ReadTextLineByLine_UnExistingFile_ThrowFileNotFoundException()
     {
         var calling = () => reader.ReadTextLineByLine("UnExistingFile.txt").ToArray();
 
@@ -52,7 +52,7 @@ public class TxtReaderTests
     
     [TestCase("Morozko.png")]
     [TestCase("EmptyFile.doc")]
-    public void ReadTextLineByLine_UnsuitableFormat_ThrowsIOException(string filename)
+    public void ReadTextLineByLine_UnsuitableFormat_ThrowIOException(string filename)
     {
         var pathToFile = Path.Combine(pathToFileFolder, filename);
         
