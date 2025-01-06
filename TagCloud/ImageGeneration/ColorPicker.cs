@@ -3,7 +3,7 @@ using TagCloud.TextProcessing;
 
 namespace TagCloud.ImageGeneration;
 
-public class ColorPicker : IColorPicker
+public class ColorPicker : IColorProvider
 {
     public string Name { get; } = "Однотонный красный";
 

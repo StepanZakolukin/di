@@ -4,9 +4,9 @@ namespace TagCloudGUI.Controls;
 
 public class ColorSettings : DropdownList
 {
-    private readonly Dictionary<string, IColorPicker> coloringAlgorithms = new();
+    private readonly Dictionary<string, IColorProvider> coloringAlgorithms = new();
 
-    public ColorSettings(IEnumerable<IColorPicker> coloringAlgorithms,
+    public ColorSettings(IEnumerable<IColorProvider> coloringAlgorithms,
         TagCloudConfigurationForm parentForm) : base("Алгоритм расцветки слов:",
         coloringAlgorithms.Select(colorPicker => colorPicker.Name), parentForm)
     {

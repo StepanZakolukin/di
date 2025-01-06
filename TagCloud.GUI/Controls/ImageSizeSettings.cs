@@ -55,14 +55,9 @@ public class ImageSizeSettings : TableLayoutPanel
         if (int.TryParse(heightTextBox.Text, out var height) && height > 0 &&
             int.TryParse(widthTextBox.Text, out var width) && width > 0)
         {
-            var center = new Point(width / 2, height / 2);
-            visualizationProvider.UserInputProvider.LayoutProvider.Center = center;
             visualizationProvider.SettingsProvider.Settings.ImageSize = new Size(width, height);
             heightTextBox.BackColor = Color.White;
             widthTextBox.BackColor = Color.White;
-
-            foreach (var layoutProvider in layoutProviders)
-                layoutProvider.Center = center;
         }
         else
         {

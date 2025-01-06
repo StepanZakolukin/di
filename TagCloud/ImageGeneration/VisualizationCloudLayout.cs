@@ -15,6 +15,9 @@ public class VisualizationCloudLayout(
 
     public Bitmap CreateImage()
     {
+        UserInputProvider.LayoutProvider.ResetLayout();
+        var center = new Point(SettingsProvider.Settings.ImageSize.Width / 2, SettingsProvider.Settings.ImageSize.Height / 2);
+        UserInputProvider.LayoutProvider.Center = center;
         coefficient = SettingsProvider.Settings.ImageSize.Width * SettingsProvider.Settings.CloudCompressionRatio / UserInputProvider.Words.Count();
         var image = new Bitmap(SettingsProvider.Settings.ImageSize.Width, SettingsProvider.Settings.ImageSize.Height);
         DrawСloudOfWords(Graphics.FromImage(image));
@@ -26,7 +29,7 @@ public class VisualizationCloudLayout(
     {
         foreach (var word in UserInputProvider.Words)
         {
-            var color = UserInputProvider.ColorPicker.GetColorForWord(word);
+            var color = UserInputProvider.ColorProvider.GetColorForWord(word);
             var height = word.NumberInText * coefficient;
             var font = new Font(SettingsProvider.Settings.FontFamily, height, GraphicsUnit.Pixel);
             var size = graphics.MeasureString(word.Word, font);

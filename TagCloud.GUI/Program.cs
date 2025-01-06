@@ -15,7 +15,7 @@ internal static class Program
         var services = new ServiceCollection();
         services.AddSingleton<IReader, TxtReader>();
         services.AddSingleton<IReaderProvider, ReaderPicker>();
-        services.AddSingleton<IColorPicker, ColorPicker>();
+        services.AddSingleton<IColorProvider, ColorPicker>();
         services.AddSingleton<Form, TagCloudConfigurationForm>();
         services.AddSingleton<IWordsProvider, TextPreprocessing>();
         services.AddSingleton<IUserInputProvider, UserInputProvider>();

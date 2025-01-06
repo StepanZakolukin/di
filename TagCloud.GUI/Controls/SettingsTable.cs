@@ -5,7 +5,7 @@ namespace TagCloudGUI.Controls;
 
 public class SettingsTable : TableLayoutPanel
 {
-    public SettingsTable(IVisualizationProvider visualizationProvider, IEnumerable<IColorPicker> colorPickers,
+    public SettingsTable(IVisualizationProvider visualizationProvider, IEnumerable<IColorProvider> colorPickers,
         IEnumerable<ILayoutProvider> layoutProviders, TagCloudConfigurationForm parentForm, SettingTextType textType)
     {
         Dock = DockStyle.Fill;

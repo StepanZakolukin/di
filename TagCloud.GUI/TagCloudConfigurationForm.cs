@@ -17,7 +17,7 @@ public partial class TagCloudConfigurationForm : Form
     public TagCloudConfigurationForm(
         IWordsProvider wordsProvider,
         IReaderProvider readerProvider,
-        IEnumerable<IColorPicker> colorPickers,
+        IEnumerable<IColorProvider> colorPickers,
         IVisualizationProvider visualizationProvider,
         IEnumerable<ILayoutProvider> layoutProviders)
     {
@@ -55,12 +55,12 @@ public partial class TagCloudConfigurationForm : Form
         }
     }
 
-    public IColorPicker? ColorPicker
+    public IColorProvider? ColorPicker
     {
-        get => visualizationProvider.UserInputProvider.ColorPicker;
+        get => visualizationProvider.UserInputProvider.ColorProvider;
         set
         {
-            visualizationProvider.UserInputProvider.ColorPicker = value;
+            visualizationProvider.UserInputProvider.ColorProvider = value;
             DataHasBeenUpdated?.Invoke(CheckCorrectnessOfData());
         }
     }

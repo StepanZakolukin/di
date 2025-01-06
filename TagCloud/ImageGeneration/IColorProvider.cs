@@ -3,7 +3,7 @@ using TagCloud.TextProcessing;
 
 namespace TagCloud.ImageGeneration;
 
-public interface IColorPicker
+public interface IColorProvider
 {
     public string Name { get; }
     public Color GetColorForWord(WordInfo word);

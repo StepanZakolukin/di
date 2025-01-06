@@ -5,9 +5,9 @@ namespace TagCloud.ImageGeneration;
 
 public class UserInputProvider : IUserInputProvider
 {
-    public UserInputProvider(IColorPicker colorPicker, ILayoutProvider layoutProvider)
+    public UserInputProvider(IColorProvider colorProvider, ILayoutProvider layoutProvider)
     {
-        ColorPicker = colorPicker;
+        ColorProvider = colorProvider;
         LayoutProvider = layoutProvider;
     }
     
@@ -19,11 +19,11 @@ public class UserInputProvider : IUserInputProvider
         set => words = value ?? throw new ArgumentNullException(nameof(value));
     }
 
-    private IColorPicker colorPicker;
-    public IColorPicker ColorPicker
+    private IColorProvider colorProvider;
+    public IColorProvider ColorProvider
     {
-        get => colorPicker;
-        set => colorPicker = value ?? throw new ArgumentNullException(nameof(value));
+        get => colorProvider;
+        set => colorProvider = value ?? throw new ArgumentNullException(nameof(value));
     }
     
     private ILayoutProvider layoutProvider;

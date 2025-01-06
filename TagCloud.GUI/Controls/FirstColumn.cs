@@ -5,7 +5,7 @@ namespace TagCloudGUI.Controls;
 
 public class FirstColumn : TableLayoutPanel
 {
-    public FirstColumn(IVisualizationProvider visualizationProvider, IEnumerable<IColorPicker> colorPickers,
+    public FirstColumn(IVisualizationProvider visualizationProvider, IEnumerable<IColorProvider> colorPickers,
         IEnumerable<ILayoutProvider> layoutProviders, TagCloudConfigurationForm parentForm, SettingTextType textType)
     {
         Dock = DockStyle.Fill;
