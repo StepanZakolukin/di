@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using FluentAssertions;
 using TagCloud.ReadingFiles;
 using TagCloud.TextProcessing;
@@ -9,40 +10,51 @@ namespace TagCloud.Tests;
 public class TextPreprocessingTests
 {
     private readonly TextPreprocessing textPreprocessing = new();
-    private readonly IReaderProvider readerProvider = new ReaderPicker([new TxtReader()]);
-    private readonly string pathToFileFolder = Path.Combine(Directory.GetCurrentDirectory(), "TestsFiles");
-    
+    private readonly ImmutableArray<string> testLines;
+    private readonly Dictionary<string, int> frequencyDictionary = new()
+    {
+        { "привет", 5 },
+        { "морозный", 7 },
+        { "быстрый", 3 },
+        { "я", 20 },
+        { "человек", 2},
+        { "отчаянно", 8},
+    };
     private readonly HashSet<char> russianAlphabet = [];
 
-    [SetUp]
-    public void Setup()
+    public TextPreprocessingTests()
     {
         for (var symbol = 'а'; symbol <= 'я'; symbol++)
             russianAlphabet.Add(symbol);
         russianAlphabet.Add('ё');
+        
+        var lines = TxtReaderTests.CreateArrayOfWords(frequencyDictionary);
+        var random = new Random();
+        random.Shuffle(lines);
+        testLines = [..lines];
     }
 
     [TestCase(ContentStructure.Literary)]
     [TestCase(ContentStructure.ListOfWords)]
     public void PerformPreprocessing_Text_AllCharactersMustBeInLowercase(ContentStructure typeOfContent)
     {
-        var morozko = Path.Combine(pathToFileFolder, "Morozko.txt");
+        var lines = new[] { "привет", "ПрИвЕт", "Привет", "ПРИВЕТ" };
 
         var result = textPreprocessing.PerformPreprocessing(
-            readerProvider.GetReader(morozko),
+            () => lines,
             ContentStructure.Literary);
 
         CheckCharactersOfWords(result, symbol => char.IsLower(symbol) || symbol == '-');
-}
+    }
 
-    [Test]
-    public void PerformPreprocessing_Text_OnlyRussianLettersShouldRemainInWords()
+    [TestCase(ContentStructure.Literary)]
+    public void PerformPreprocessing_Text_OnlyRussianLettersShouldRemainInWords(ContentStructure typeOfContent)
     {
-        var eugeneOnegin = Path.Combine(pathToFileFolder, "EugeneOnegin.txt");
+        var lines = new[] { "python?", "java!", "C#", "языки-", "программирования", "пriveт", "из-за" };
         
         var result = textPreprocessing.PerformPreprocessing(
-            readerProvider.GetReader(eugeneOnegin),
-            ContentStructure.Literary);
+            () => lines,
+            typeOfContent);
         
         CheckCharactersOfWords(result, symbol => russianAlphabet.Contains(symbol) || symbol == '-');
     }
@@ -57,24 +69,8 @@ public class TextPreprocessingTests
     [TestCase(ContentStructure.ListOfWords)]
     public void PerformPreprocessing_Text_CorrectWordCount(ContentStructure typeOfContent)
     {
-        var pathToFile = Path.Combine(pathToFileFolder, "CheckingCount.txt");
-        var frequencyDictionary = new Dictionary<string, int>
-        {
-            { "привет", 5 },
-            { "морозный", 7 },
-            { "быстрый", 3 },
-            { "я", 20 },
-            { "человек", 2},
-            { "отчаянно", 8},
-        };
-        
-        var lines = TxtReaderTests.CreateArrayOfWords(frequencyDictionary);
-        var random = new Random();
-        random.Shuffle(lines);
-        File.WriteAllLines(pathToFile, lines);
-        
         var result = textPreprocessing.PerformPreprocessing(
-            readerProvider.GetReader(pathToFile),
+            () => testLines,
             typeOfContent);
         
         result.All(wordInfo => frequencyDictionary[wordInfo.Word] == wordInfo.NumberInText).Should().BeTrue();
