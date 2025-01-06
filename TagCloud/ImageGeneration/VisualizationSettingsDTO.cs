@@ -13,8 +13,8 @@ public class VisualizationSettingsDto(Size imageSize, FontFamily fontFamily, flo
         get => cloudCompressionRatio;
         set
         {
-            if (value < 0.501 || value > 2.001)
-                throw new ArgumentException("Должно быть больше 0.5, но меньше или равно 2", nameof(value));
+            if (value < 0.1 || value > 10.001)
+                throw new ArgumentException("Должно быть больше 0.09, но меньше или равно 10", nameof(value));
 
             cloudCompressionRatio = value;
         }

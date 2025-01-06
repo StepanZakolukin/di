@@ -30,7 +30,7 @@ public class VisualizationCloudLayoutTests
         services.AddSingleton<VisualizationSettingsDto>(_ => new VisualizationSettingsDto(
             imageSize,
             new FontFamily("Arial"),
-            1.4f));
+            1f));
         services.AddTransient<ILayoutProvider>(_ => new CircularCloud(new Point(imageSize.Width / 2, imageSize.Height / 2)));
 
         var provider = services.BuildServiceProvider();
