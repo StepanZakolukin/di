@@ -5,10 +5,10 @@ namespace TagCloudGUI.Controls;
 
 public sealed class PushButtonPanel : TableLayoutPanel
 {
-    private static readonly Dictionary<string, FileContentStructure> FileContentStructures = new()
+    private static readonly Dictionary<string, ContentStructure> FileContentStructures = new()
     {
-        ["Литературный текст"] = FileContentStructure.Literary,
-        ["Список слов (по одному в строке)"] = FileContentStructure.ListOfWords,
+        ["Литературный текст"] = ContentStructure.Literary,
+        ["Список слов (по одному в строке)"] = ContentStructure.ListOfWords,
     };
     
     private readonly TagCloudButton cloudGenerationButton = new()

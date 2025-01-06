@@ -60,9 +60,9 @@ public class TextPreprocessing : IWordsProvider
                 pair.Value));
     }
     
-    public IEnumerable<WordInfo> PerformPreprocessing(Func<IEnumerable<string>> getTextLineByLine, FileContentStructure structureOfContent)
+    public IEnumerable<WordInfo> PerformPreprocessing(Func<IEnumerable<string>> getTextLineByLine, ContentStructure structureOfContent)
     {
-        if (structureOfContent == FileContentStructure.Literary)
+        if (structureOfContent == ContentStructure.Literary)
             return PerformPreliminaryProcessingOfLiteraryText(getTextLineByLine);
         return PerformPreprocessingOfWordFile(getTextLineByLine);
     }

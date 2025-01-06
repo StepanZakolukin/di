@@ -1,6 +1,6 @@
 namespace TagCloudGUI.Controls;
 
-public enum FileContentStructure
+public enum ContentStructure
 {
     Literary,
     ListOfWords

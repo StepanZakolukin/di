@@ -1,4 +1,5 @@
 using FluentAssertions;
+using TagCloud.ReadingFiles;
 using TagCloud.TextProcessing;
 using TagCloudGUI.Controls;
 
@@ -8,6 +9,7 @@ namespace TagCloud.Tests;
 public class TextPreprocessingTests
 {
     private readonly TextPreprocessing textPreprocessing = new();
+    private readonly IReaderProvider readerProvider = new ReaderPicker([new TxtReader()]);
     
     private readonly HashSet<char> russianAlphabet = [];
 
@@ -19,13 +21,13 @@ public class TextPreprocessingTests
         russianAlphabet.Add('ё');
     }
 
-    [TestCase(FileContentStructure.Literary)]
-    [TestCase(FileContentStructure.ListOfWords)]
-    public void PerformPreprocessing_Text_AllCharactersMustBeInLowercase(FileContentStructure typeOfContent)
+    [TestCase(ContentStructure.Literary)]
+    [TestCase(ContentStructure.ListOfWords)]
+    public void PerformPreprocessing_Text_AllCharactersMustBeInLowercase(ContentStructure typeOfContent)
     {
         var morozko = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "Morozko.txt");
 
-        var result = textPreprocessing.PerformPreprocessing(morozko, FileContentStructure.Literary);
+        var result = textPreprocessing.PerformPreprocessing(readerProvider.GetReader(morozko), ContentStructure.Literary);
 
         CheckCharactersOfWords(result, symbol => char.IsLower(symbol) || symbol == '-');
 }
@@ -35,7 +37,9 @@ public class TextPreprocessingTests
     {
         var eugeneOnegin = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "EugeneOnegin.txt");
         
-        var result = textPreprocessing.PerformPreprocessing(eugeneOnegin, FileContentStructure.Literary);
+        var result = textPreprocessing.PerformPreprocessing(
+            readerProvider.GetReader(eugeneOnegin),
+            ContentStructure.Literary);
         
         CheckCharactersOfWords(result, symbol => russianAlphabet.Contains(symbol) || symbol == '-');
     }
@@ -46,9 +50,9 @@ public class TextPreprocessingTests
             wordInfo.Word.All(check).Should().BeTrue();
     }
 
-    [TestCase(FileContentStructure.Literary)]
-    [TestCase(FileContentStructure.ListOfWords)]
-    public void PerformPreprocessing_Text_CorrectWordCount(FileContentStructure typeOfContent)
+    [TestCase(ContentStructure.Literary)]
+    [TestCase(ContentStructure.ListOfWords)]
+    public void PerformPreprocessing_Text_CorrectWordCount(ContentStructure typeOfContent)
     {
         var pathToFile = "../../../Texts/CheckingCount.txt";
         var frequencyDictionary = new Dictionary<string, int>
@@ -66,7 +70,9 @@ public class TextPreprocessingTests
         random.Shuffle(lines);
         File.WriteAllLines(pathToFile, lines);
         
-        var result = textPreprocessing.PerformPreprocessing(pathToFile, typeOfContent);
+        var result = textPreprocessing.PerformPreprocessing(
+            readerProvider.GetReader(pathToFile),
+            typeOfContent);
         
         result.All(wordInfo => frequencyDictionary[wordInfo.Word] == wordInfo.NumberInText).Should().BeTrue();
     }
@@ -81,23 +87,23 @@ public class TextPreprocessingTests
         return list.ToArray();
     }
 
-    [TestCase(FileContentStructure.Literary)]
-    [TestCase(FileContentStructure.ListOfWords)]
-    public void PerformPreprocessing_UnExistingFile_ThrowsFileNotFoundException(FileContentStructure typeOfContent)
+    [TestCase(ContentStructure.Literary)]
+    [TestCase(ContentStructure.ListOfWords)]
+    public void PerformPreprocessing_UnExistingFile_ThrowsFileNotFoundException(ContentStructure typeOfContent)
     {
         var calling = () => textPreprocessing.PerformPreprocessing(
-            "UnExistingFile.txt",
+            readerProvider.GetReader("UnExistingFile.txt"),
             typeOfContent);
         
         calling.Should().Throw<FileNotFoundException>();
     }
 
-    [TestCase(FileContentStructure.Literary)]
-    [TestCase(FileContentStructure.ListOfWords)]
-    public void PerformPreprocessing_EmptyFile_EmptyCollectionOfWords(FileContentStructure typeOfContent)
+    [TestCase(ContentStructure.Literary)]
+    [TestCase(ContentStructure.ListOfWords)]
+    public void PerformPreprocessing_EmptyFile_EmptyCollectionOfWords(ContentStructure typeOfContent)
     {
         var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "Texts", "EmptyFile.txt");
-        var actual = textPreprocessing.PerformPreprocessing(pathToFile, FileContentStructure.Literary);
+        var actual = textPreprocessing.PerformPreprocessing(readerProvider.GetReader(pathToFile), ContentStructure.Literary);
         
         actual.Should().BeEmpty();
     }
