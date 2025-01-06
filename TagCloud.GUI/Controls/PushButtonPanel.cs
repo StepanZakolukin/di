@@ -93,13 +93,10 @@ public sealed class PushButtonPanel : TableLayoutPanel
     private string? GetPathToSave()
     {
         var saveFileDialog = new SaveFileDialog();
-        saveFileDialog.Filter = "Изображение (*.png)|*.png";
+        saveFileDialog.Filter = "Изображение (*.png, *.jpeg, *.bmp)|*.png;*.jpeg;*.bmp";
         saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         saveFileDialog.Title = "Сохранение файла";
 
-        if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            return saveFileDialog.FileName;
-
-        return null;
+        return saveFileDialog.ShowDialog() == DialogResult.OK ? saveFileDialog.FileName : null;
     }
 }

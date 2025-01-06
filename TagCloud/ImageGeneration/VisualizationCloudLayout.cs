@@ -2,18 +2,16 @@
 
 namespace TagCloud.ImageGeneration;
 
-public class VisualizationCloudLayout : IVisualizationProvider
+public class VisualizationCloudLayout(
+    ISettingsProvider<VisualizationSettingsDto> settingsProvider,
+    IUserInputProvider userInputProvider)
+    : IVisualizationProvider
 {
     private float coefficient;
 
-    public ISettingsProvider<VisualizationSettingsDto> SettingsProvider { get; }
-    public VisualizationCloudLayout(ISettingsProvider<VisualizationSettingsDto> settingsProvider, IUserInputProvider userInputProvider)
-    {
-        SettingsProvider = settingsProvider;
-        UserInputProvider = userInputProvider;
-    }
+    public ISettingsProvider<VisualizationSettingsDto> SettingsProvider { get; } = settingsProvider;
 
-    public IUserInputProvider UserInputProvider { get; init; }
+    public IUserInputProvider UserInputProvider { get; } = userInputProvider;
 
     public Bitmap CreateImage()
     {
