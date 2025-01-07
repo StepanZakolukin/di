@@ -15,6 +15,15 @@ public class VisualizationCloudLayoutTests
     private readonly IWordsProvider wordsProvider;
     private readonly IReaderProvider readerProvider;
     private readonly IVisualizationProvider visualizationProvider;
+    private readonly HashSet<string> partOfSpeechForFiltering =
+    [
+        "местоимение-прилагательное",
+        "союз",
+        "междометие",
+        "частица",
+        "предлог",
+        "местоимение-существительное",
+    ];
 
     public VisualizationCloudLayoutTests()
     {
@@ -56,30 +65,37 @@ public class VisualizationCloudLayoutTests
         visualizationProvider.SettingsProvider.Settings.CloudCompressionRatio.Should().Be(cloudCompressionRatio);
     }
     
-    [TestCase("Morozko.txt", "Morozko.png")]
-    public void CreateImage_ImageSizeMustMatchSettings(string fileName, string imageName)
+    [TestCase("Morozko.txt", "Morozko.jpeg", ContentStructure.Literary, 2.8f)]
+    [TestCase("GeeseAndSwans.txt", "GeeseAndSwans.png", ContentStructure.Literary, 3.1f)]
+    [TestCase("CheckingCount.txt", "CheckingCount.bmp", ContentStructure.ListOfWords, 0.9f)]
+    public void CreateImage_ImageSizeMustMatchSettings(string fileName, string imageName,
+        ContentStructure structure, float cloudCompressionRatio)
     {
-        CheckSizeMatching(fileName, imageName, ContentStructure.Literary);
-        visualizationProvider.SettingsProvider.Settings.ImageSize = new Size(1920, 850);
-        CheckSizeMatching(fileName, imageName, ContentStructure.Literary);
+        var sourceFile = Path.Combine("TestsFiles", fileName);
+        var words = wordsProvider.PerformPreprocessing(
+            readerProvider.GetReader(sourceFile), structure);
+        visualizationProvider.UserInputProvider.Words = words
+            .Where(info => !partOfSpeechForFiltering.Contains(info.PartOfSpeach));
+        visualizationProvider.SettingsProvider.Settings.CloudCompressionRatio = cloudCompressionRatio;
+        
+        visualizationProvider.SettingsProvider.Settings.ImageSize = new Size(1080, 1080);
+        CheckSizeMatching(fileName, imageName);
+        visualizationProvider.SettingsProvider.Settings.ImageSize = new Size(1280, 720);
+        CheckSizeMatching(fileName, imageName);
     }
 
-    private void CheckSizeMatching(string fileName, string imageName, ContentStructure structure)
+    private void CheckSizeMatching(string fileName, string imageName)
     {
-        var image = GenerateImage(fileName, imageName, structure);
+        var image = GenerateImage(imageName);
         image.Size.Should().Be(visualizationProvider.SettingsProvider.Settings.ImageSize);
     }
 
-    private Bitmap GenerateImage(string fileName, string imageName, ContentStructure structure)
+    private Bitmap GenerateImage(string imageName)
     {
         imageName = $"({visualizationProvider.SettingsProvider.Settings.ImageSize.Width}" +
                     $"x{visualizationProvider.SettingsProvider.Settings.ImageSize.Height})" +
                     $"{imageName}";
         var pathToImage =  $"../../../Images/{imageName}";
-        var sourceFile = Path.Combine("TestsFiles", fileName);
-        var words = wordsProvider.PerformPreprocessing(
-            readerProvider.GetReader(sourceFile), structure);
-        visualizationProvider.UserInputProvider.Words = words;
 
         var image = visualizationProvider.CreateImage();
         image.Save(pathToImage);
