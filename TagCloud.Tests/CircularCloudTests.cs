@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using FluentAssertions;
+using FluentAssertions.Extensions;
 using TagCloud.CloudLayout;
 
 namespace TagCloud.Tests;
@@ -54,5 +55,19 @@ public class CircularCloudTests
 
             listRectangles.Add(rectangle);
         }
+    }
+
+    [Test]
+    public void PutNextRectangle_DegenerateRectangle_ShouldNotGoIntoEndlessLoop()
+    {
+        var call = () =>
+        {
+            var cloudLayouter = new CircularCloud(new Point(500, 500));
+            cloudLayouter.PutNextRectangle(new SizeF(10, 50));
+            cloudLayouter.PutNextRectangle(new SizeF(0, 50));
+            cloudLayouter.PutNextRectangle(new SizeF(10, 0));
+        };
+        
+        call.ExecutionTime().Should().BeLessThanOrEqualTo(3000.Milliseconds());
     }
 }

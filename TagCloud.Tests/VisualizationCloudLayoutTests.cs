@@ -65,9 +65,12 @@ public class VisualizationCloudLayoutTests
         visualizationProvider.SettingsProvider.Settings.CloudCompressionRatio.Should().Be(cloudCompressionRatio);
     }
     
-    [TestCase("Morozko.txt", "Morozko.jpeg", ContentStructure.Literary, 2.8f)]
-    [TestCase("GeeseAndSwans.txt", "GeeseAndSwans.png", ContentStructure.Literary, 3.1f)]
-    [TestCase("CheckingCount.txt", "CheckingCount.bmp", ContentStructure.ListOfWords, 0.9f)]
+    [TestCase("Morozko.txt", "Morozko.jpeg",
+        ContentStructure.Literary, 2.8f)]
+    [TestCase("GeeseAndSwans.txt", "GeeseAndSwans.png",
+        ContentStructure.Literary, 3.1f)]
+    [TestCase("CheckingCount.txt", "CheckingCount.bmp",
+        ContentStructure.ListOfWords, 0.9f)]
     public void CreateImage_ImageSizeMustMatchSettings(string fileName, string imageName,
         ContentStructure structure, float cloudCompressionRatio)
     {
@@ -79,12 +82,12 @@ public class VisualizationCloudLayoutTests
         visualizationProvider.SettingsProvider.Settings.CloudCompressionRatio = cloudCompressionRatio;
         
         visualizationProvider.SettingsProvider.Settings.ImageSize = new Size(1080, 1080);
-        CheckSizeMatching(fileName, imageName);
+        CheckSizeMatching(imageName);
         visualizationProvider.SettingsProvider.Settings.ImageSize = new Size(1280, 720);
-        CheckSizeMatching(fileName, imageName);
+        CheckSizeMatching(imageName);
     }
 
-    private void CheckSizeMatching(string fileName, string imageName)
+    private void CheckSizeMatching(string imageName)
     {
         var image = GenerateImage(imageName);
         image.Size.Should().Be(visualizationProvider.SettingsProvider.Settings.ImageSize);
