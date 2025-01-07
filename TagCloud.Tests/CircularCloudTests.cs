@@ -24,14 +24,14 @@ public class CircularCloudTests
     public void PutNextRectangle_RandomSizes_MustBeRightSize()
     {
         var random = new Random();
-        var cloud = new CircularCloud(new Point(960, 540));
+        var placemarker = new CircularCloud(new Point(960, 540));
 
         for (var i = 0; i < 50; i++)
         {
             var width = random.Next(30, 200);
             var actualSize = new SizeF(width, random.Next(width / 6, width / 3));
 
-            var rectangle = cloud.PutNextRectangle(actualSize);
+            var rectangle = placemarker.PutNextRectangle(actualSize);
 
             actualSize.Should().Be(rectangle.Size);
         }
@@ -41,13 +41,13 @@ public class CircularCloudTests
     public void PutNextRectangle_RandomSizes_ShouldNotIntersect()
     {
         var random = new Random();
-        var cloudLayouter = new CircularCloud(new Point(960, 540));
+        var placemarker = new CircularCloud(new Point(960, 540));
 
         for (var i = 0; i < 100; i++)
         {
             var width = random.Next(30, 200);
 
-            var rectangle = cloudLayouter.PutNextRectangle(new SizeF(width, random.Next(width / 6, width / 3)));
+            var rectangle = placemarker.PutNextRectangle(new SizeF(width, random.Next(width / 6, width / 3)));
 
             listRectangles.Any(rect => rect.IntersectsWith(rectangle))
                 .Should()
@@ -62,10 +62,10 @@ public class CircularCloudTests
     {
         var call = () =>
         {
-            var cloudLayouter = new CircularCloud(new Point(500, 500));
-            cloudLayouter.PutNextRectangle(new SizeF(10, 50));
-            cloudLayouter.PutNextRectangle(new SizeF(0, 50));
-            cloudLayouter.PutNextRectangle(new SizeF(10, 0));
+            var placemarker = new CircularCloud(new Point(500, 500));
+            placemarker.PutNextRectangle(new SizeF(10, 50));
+            placemarker.PutNextRectangle(new SizeF(0, 50));
+            placemarker.PutNextRectangle(new SizeF(10, 0));
         };
         
         call.ExecutionTime().Should().BeLessThanOrEqualTo(3000.Milliseconds());
