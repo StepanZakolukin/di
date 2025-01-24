@@ -32,9 +32,9 @@ public class ReaderPickerTests
     {
         var path = Path.Combine(pathToFileFolder, "Morozko.png");
         
-        var call = () => readerProvider.GetReader(path);
+        var status = readerProvider.GetReader(path);
         
-        call.Should().Throw<Exception>();
+        status.IsSuccess.Should().BeFalse();
     }
 
     [Test]
@@ -54,7 +54,7 @@ public class ReaderPickerTests
         var path = Path.Combine(pathToFileFolder, "Morozko.txt");
         var expected = () => reader.ReadTextLineByLine(path);
         
-        var actual = readerProvider.GetReader(path);
+        var actual = readerProvider.GetReader(path).GetValueOrThrow();
         
         actual().Should().BeEquivalentTo(expected());
     }
@@ -62,8 +62,8 @@ public class ReaderPickerTests
     [Test]
     public void GetReader_UnExistingFile_ThrowFileNotFoundException()
     {
-        var calling = () => readerProvider.GetReader("UnExistingFile.txt");
+        var status = readerProvider.GetReader("UnExistingFile.txt");
 
-        calling.Should().Throw<FileNotFoundException>();
+        status.IsSuccess.Should().BeFalse();
     }
 }

@@ -15,6 +15,13 @@
         <None Update="TextProcessing\mystem.exe">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="Parsing\mystem.exe">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="D:\.NET_projects\fp\ErrorHandling\ErrorHandling.csproj" />
     </ItemGroup>
 
 </Project>

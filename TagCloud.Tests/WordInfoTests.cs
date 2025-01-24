@@ -1,5 +1,5 @@
 using FluentAssertions;
-using TagCloud.TextProcessing;
+using TagCloud.Parsing;
 
 namespace TagCloud.Tests;
 
