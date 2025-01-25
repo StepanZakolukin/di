@@ -1,8 +1,6 @@
-/*using System.Collections.Immutable;
+using System.Collections.Immutable;
 using FluentAssertions;
-using TagCloud.ImageGeneration;
 using TagCloud.Parsing;
-using TagCloud.ReadingFiles;
 
 namespace TagCloud.Tests;
 
@@ -20,43 +18,40 @@ public class LiteraryTextParserTests
         { "человек", 2},
         { "отчаянно", 8},
     };
-    private readonly HashSet<char> russianAlphabet = [];
+    private readonly HashSet<char> _russianAlphabet = [];
 
     public LiteraryTextParserTests()
     {
         for (var symbol = 'а'; symbol <= 'я'; symbol++)
-            russianAlphabet.Add(symbol);
-        russianAlphabet.Add('ё');
+            _russianAlphabet.Add(symbol);
+        _russianAlphabet.Add('ё');
         
         var lines = TxtReaderTests.CreateArrayOfWords(_frequencyDictionary);
         var random = new Random();
         random.Shuffle(lines);
         _testLines = [..lines];
     }
-
-    [TestCase(ContentStructure.Literary)]
-    [TestCase(ContentStructure.ListOfWords)]
-    public void PerformPreprocessing_Text_AllCharactersMustBeInLowercase(ContentStructure typeOfContent)
+    
+    [Test]
+    public void PerformPreprocessing_Text_AllCharactersMustBeInLowercase()
     {
         var lines = new[] { "привет", "ПрИвЕт", "Привет", "ПРИВЕТ" };
 
-        var result = _literaryTextParser.Parse(
-            () => lines,
-            ContentStructure.Literary);
+        var result = _literaryTextParser.Parse(() => lines);
 
-        CheckCharactersOfWords(result, symbol => char.IsLower(symbol) || symbol == '-');
+        result.IsSuccess.Should().BeTrue();
+        CheckCharactersOfWords(result.GetValueOrThrow(), symbol => char.IsLower(symbol) || symbol == '-');
     }
 
-    [TestCase(ContentStructure.Literary)]
-    public void PerformPreprocessing_Text_OnlyRussianLettersShouldRemainInWords(ContentStructure typeOfContent)
+    [Test]
+    public void PerformPreprocessing_Text_OnlyRussianLettersShouldRemainInWords()
     {
         var lines = new[] { "python?", "java!", "C#", "языки-", "программирования", "пriveт", "из-за" };
         
-        var result = _literaryTextParser.Parse(
-            () => lines,
-            typeOfContent);
-        
-        CheckCharactersOfWords(result, symbol => russianAlphabet.Contains(symbol) || symbol == '-');
+        var result = _literaryTextParser.Parse(() => lines);
+
+        result.IsSuccess.Should().BeTrue();
+        CheckCharactersOfWords(result.GetValueOrThrow(), symbol => _russianAlphabet.Contains(symbol) || symbol == '-');
     }
 
     private void CheckCharactersOfWords(IEnumerable<WordInfo> words, Func<char, bool> check)
@@ -65,14 +60,12 @@ public class LiteraryTextParserTests
             wordInfo.Word.All(check).Should().BeTrue();
     }
 
-    [TestCase(ContentStructure.Literary)]
-    [TestCase(ContentStructure.ListOfWords)]
-    public void PerformPreprocessing_Text_CorrectWordCount(ContentStructure typeOfContent)
+    [Test]
+    public void PerformPreprocessing_Text_CorrectWordCount()
     {
-        var result = _literaryTextParser.Parse(
-            () => _testLines,
-            typeOfContent);
+        var result = _literaryTextParser.Parse(() => _testLines);
         
-        result.All(wordInfo => _frequencyDictionary[wordInfo.Word] == wordInfo.NumberInText).Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
+        result.GetValueOrThrow().All(wordInfo => _frequencyDictionary[wordInfo.Word] == wordInfo.NumberInText).Should().BeTrue();
     }
-}*/
+}
