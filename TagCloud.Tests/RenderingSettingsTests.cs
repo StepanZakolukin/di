@@ -1,18 +1,44 @@
-/*using System.Drawing;
+using System.Drawing;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using Microsoft.Extensions.DependencyInjection;
 using TagCloud.ImageGeneration;
 using TagCloud.ImageGeneration.Settings;
+using TagCloud.ImageGeneration.Settings.DTO;
 
 namespace TagCloud.Tests;
 
 [TestFixture]
 public class RenderingSettingsTests
 {
-    private readonly RenderingSettings settings = new(
-        new Size(1080, 1080),
-        "Arial",
-        5);
+    private RenderingSettings _settings;
+    private LayoutAlgorithmDto _layoutAlgorithmDto;
+    private ColoringAlgorithmDto _coloringAlgorithmDto;
+    private WordsListDto _wordsListDto;
+    
+    [SetUp]
+    public void PrepareEnvironment()
+    {
+        var services = new ServiceCollection();
+        services.AddSingleton<IColorProvider, ColorPicker>();
+        services.AddSingleton<ILayoutProvider, CircularCloud>();
+        services.AddSingleton<LayoutAlgorithmDto>();
+        services.AddSingleton<ColoringAlgorithmDto>();
+        
+        var partialSupplier = services.BuildServiceProvider();
+        _layoutAlgorithmDto = partialSupplier.GetRequiredService<LayoutAlgorithmDto>();
+        _coloringAlgorithmDto = partialSupplier.GetRequiredService<ColoringAlgorithmDto>();
+        _wordsListDto = new WordsListDto();
+        services.AddSingleton<RenderingSettings>(_ => new RenderingSettings(
+            new ImageSizeDto(1080, 1080),
+            new FontFamilyDto("Arial"),
+            new CompressionRatioDto(5f),
+            _layoutAlgorithmDto,
+            _coloringAlgorithmDto,
+            _wordsListDto));
+        var provider = services.BuildServiceProvider();
+        
+        _settings = provider.GetRequiredService<RenderingSettings>();
+    }
 
     [TestCase(-100, 100, "Arial", 5)]
     [TestCase(100, -100, "Arial", 5)]
@@ -26,8 +52,13 @@ public class RenderingSettingsTests
         string fontName,
         float coefficient)
     {
-        var calling = () =>
-            new RenderingSettings(new Size(width, height), fontName, coefficient);
+        var calling = () => new RenderingSettings(
+            new ImageSizeDto(width, height),
+            new FontFamilyDto(fontName),
+            new CompressionRatioDto(coefficient),
+            _layoutAlgorithmDto,
+            _coloringAlgorithmDto,
+            _wordsListDto);
 
         calling.Should().Throw<ArgumentException>();
     }
@@ -38,8 +69,13 @@ public class RenderingSettingsTests
         string fontName,
         float coefficient)
     {
-        var calling = () =>
-            new RenderingSettings(new Size(width, height), fontName, coefficient);
+        var calling = () => new RenderingSettings(
+            new ImageSizeDto(width, height),
+            new FontFamilyDto(fontName),
+            new CompressionRatioDto(coefficient),
+            _layoutAlgorithmDto,
+            _coloringAlgorithmDto,
+            _wordsListDto);
 
         calling.Should().NotThrow();
     }
@@ -50,11 +86,11 @@ public class RenderingSettingsTests
     [TestCase(10.01f)]
     public void SetValueCloudCompressionRatio_IncorrectValue(float coefficient)
     {
-        var expected = settings.CloudCompressionRatio;
-        var status = settings.SetValueCloudCompressionRatio(coefficient);
+        var expected = _settings.CompressionRatio.Value;
+        _settings.CompressionRatio.Value = coefficient.ToString();
 
-        status.IsSuccess.Should().BeFalse();
-        settings.CloudCompressionRatio.Should().Be(expected);
+        _settings.CompressionRatio.IsCorrect.Should().BeFalse();
+        _settings.CompressionRatio.Value.Should().NotBe(expected);
     }
     
     [TestCase(2)]
@@ -62,20 +98,21 @@ public class RenderingSettingsTests
     [TestCase(0.1f)]
     public void SetValueCloudCompressionRatio_CorrectValue(float coefficient)
     {
-        var status = settings.SetValueCloudCompressionRatio(coefficient);
+        _settings.CompressionRatio.Value = coefficient.ToString();
 
-        status.IsSuccess.Should().BeTrue();
-        settings.CloudCompressionRatio.Should().Be(coefficient);
+        _settings.CompressionRatio.IsCorrect.Should().BeTrue();
+        _settings.CompressionRatio.Value.Should().Be(coefficient.ToString());
     }
 
     [TestCase(540, 200)]
     [TestCase(100, 1080)]
     public void SetValueImageSize_PositiveValues(int width, int height)
     {
-        var status = settings.SetValueImageSize(new Size(width, height));
+        _settings.ImageSize.Width = width.ToString();
+        _settings.ImageSize.Height = height.ToString();
         
-        status.IsSuccess.Should().BeTrue();
-        settings.ImageSize.Should().Be(new Size(width, height));
+        _settings.ImageSize.IsCorrect.Should().BeTrue();
+        _settings.ImageSize.GetValueOrThrow().Should().Be(new Size(width, height));
     }
     
     [TestCase(-100, 100)]
@@ -84,29 +121,31 @@ public class RenderingSettingsTests
     [TestCase(100, 0)]
     public void SetValueImageSize_NotPositiveValues(int width, int height)
     {
-        var expected = settings.ImageSize;
-        var status = settings.SetValueImageSize(new Size(width, height));
+        _settings.ImageSize.Width = width.ToString();
+        _settings.ImageSize.Height = height.ToString();
+        var calling = () => _settings.ImageSize.GetValueOrThrow();
         
-        status.IsSuccess.Should().BeFalse();
-        settings.ImageSize.Should().Be(expected);
+        _settings.ImageSize.IsCorrect.Should().BeFalse();
+        _settings.ImageSize.Width.Should().Be(width.ToString());
+        _settings.ImageSize.Height.Should().Be(height.ToString());
+        calling.Should().Throw<InvalidOperationException>();
     }
     
     [TestCase("ms")]
     public void SetValueFontFamily_NonExistentFont(string fontName)
     {
-        var expected = settings.FontFamily.Name;
-        var status = settings.SetValueFontFamily(fontName);
+        _settings.FontFamily.Name = fontName;
         
-        status.IsSuccess.Should().BeFalse();
-        settings.FontFamily.Name.Should().Be(expected);
+        _settings.FontFamily.IsCorrect.Should().BeFalse();
+        _settings.FontFamily.Name.Should().Be(fontName);
     }
 
     [TestCase("Arial")]
     public void SetValueFontFamily_SystemFont(string fontName)
     {
-        var status = settings.SetValueFontFamily(fontName);
+        _settings.FontFamily.Name = fontName;
         
-        status.IsSuccess.Should().BeTrue();
-        settings.FontFamily.Name.Should().Be(fontName);
+        _settings.FontFamily.IsCorrect.Should().BeTrue();
+        _settings.FontFamily.Name.Should().Be(fontName);
     }
-}*/
+}
