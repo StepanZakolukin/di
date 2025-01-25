@@ -7,13 +7,13 @@ public class CompressionRatioDto : ICrrectnessChecker
     public bool IsCorrect { get; private set; }
     public event Action<ICrrectnessChecker, string>? ValueChanged;
     
-    private string _ratio;
-    public string Ratio
+    private string _value;
+    public string Value
     {
-        get => _ratio;
+        get => _value;
         set
         {
-            _ratio = value;
+            _value = value;
             if (float.TryParse(value, out var number))
             {
                 IsCorrect = CheckCorrectness(number);
@@ -31,7 +31,7 @@ public class CompressionRatioDto : ICrrectnessChecker
     {
         if (!CheckCorrectness(ratio))
             throw new ArgumentException($"{MinValue} <= {nameof(ratio)} <= {MaxValue}");
-        Ratio = $"{ratio}";
+        Value = $"{ratio}";
     }
 
     private bool CheckCorrectness(float coefficient)
@@ -41,7 +41,7 @@ public class CompressionRatioDto : ICrrectnessChecker
 
     public float GetValueOrThrow()
     {
-        if (float.TryParse(_ratio, out var number))
+        if (float.TryParse(_value, out var number))
             return number;
         throw new InvalidCastException();
     }

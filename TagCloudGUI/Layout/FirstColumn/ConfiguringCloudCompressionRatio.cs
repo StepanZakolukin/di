@@ -52,6 +52,6 @@ public class ConfiguringCloudCompressionRatio : TagCloudTableLayoutPanel
 
     private void CoefficientHasChanged(object? sender, EventArgs e)
     {
-        _visualizationProvider.Settings.CompressionRatio.Ratio = _coefficient.Text;
+        _visualizationProvider.Settings.CompressionRatio.Value = _coefficient.Text;
     }
 }

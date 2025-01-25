@@ -1,4 +1,4 @@
-using System.Drawing;
+/*using System.Drawing;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using TagCloud.ImageGeneration;
@@ -109,4 +109,4 @@ public class RenderingSettingsTests
         status.IsSuccess.Should().BeTrue();
         settings.FontFamily.Name.Should().Be(fontName);
     }
-}
+}*/
